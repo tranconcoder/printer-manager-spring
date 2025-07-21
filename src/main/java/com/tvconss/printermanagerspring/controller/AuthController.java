@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @PostMapping("/register")
-    public R esponseEntity<?> registerUser(String username, String password) {
+    public ResponseEntity<?> registerUser(String username, String password) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 

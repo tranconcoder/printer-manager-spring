@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.List;
+
+@Entity
 @Table(name = "location")
 @DynamicInsert
 @DynamicUpdate
@@ -22,9 +25,10 @@ public class LocationDTO {
     private LocationType locationType;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "location_parent")
-    private LocationDTO locationParent;
+    @JoinColumn(name = "location_first_parent")
+    private LocationDTO locationFirstParent;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+//    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "location_first_parent")
+//    private List<LocationDTO> locationParents;
 
 }
