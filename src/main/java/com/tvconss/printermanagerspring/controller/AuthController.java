@@ -17,4 +17,14 @@ public class AuthController {
     public ResponseEntity<Boolean> isLoggedIn(String token) {
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<?> getUser(String token) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @GetMapping("/hello")
+    public ResponseEntity<?> hello() {
+        return new ResponseEntity<>("Hello world!",HttpStatus.NOT_IMPLEMENTED);
+    }
 }
