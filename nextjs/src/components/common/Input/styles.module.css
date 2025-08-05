@@ -1,0 +1,8 @@
+.input-elm:not(:placeholder-shown) ~ .placeholder-elm,
+.input-elm:focus ~ .placeholder-elm {
+  top: -2px;
+}
+
+.input-elm:focus ~ .placeholder-elm {
+  color: var(--color-blue-500);
+}

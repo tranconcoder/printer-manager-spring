@@ -1,0 +1,11 @@
+# top-most EditorConfig file
+root = true
+
+# Các cài đặt chung cho tất cả các file
+[*]
+indent_style = space
+indent_size = 3
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true

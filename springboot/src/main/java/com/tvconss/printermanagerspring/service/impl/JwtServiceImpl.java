@@ -1,0 +1,71 @@
+package com.tvconss.printermanagerspring.service.impl;
+
+import com.tvconss.printermanagerspring.entity.UserEntity;
+import com.tvconss.printermanagerspring.service.JwtService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.security.PrivateKey;
+import java.time.Instant;
+import java.util.*;
+
+@Service
+public class JwtServiceImpl implements JwtService {
+
+    @Value("${jwt.access_token_expire_time}")
+    private int accessTokenExpireTime;
+
+    @Value("${jwt.refresh_token_expire_time}")
+    private int refreshTokenExpireTime;
+
+    @Override
+    public String generateAccessToken(PrivateKey privateKey, UserEntity user) {
+
+        Instant now = Instant.now();
+        Instant expireAt = now.plusSeconds(accessTokenExpireTime);
+
+        return Jwts.builder()
+                .setSubject(user.getUserId().toString())
+                .claim("userId", user.getUserId())
+                .claim("userFirstName", user.getUserFirstName())
+                .claim("userLastName", user.getUserLastName())
+                .claim("userEmail", user.getUserEmail())
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(expireAt))
+                .signWith(privateKey, SignatureAlgorithm.RS256)
+                .compact();
+    }
+
+    @Override
+    public String generateRefreshToken(UUID uuid, PrivateKey privateKey, UserEntity user) {
+
+        Instant now = Instant.now();
+        Instant expireAt = now.plusSeconds(refreshTokenExpireTime);
+
+        return Jwts.builder()
+                .setId(uuid.toString())
+                .setSubject(user.getUserId().toString())
+                .claim("userId", user.getUserId())
+                .claim("userFirstName", user.getUserFirstName())
+                .claim("userLastName", user.getUserLastName())
+                .claim("userEmail", user.getUserEmail())
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(expireAt))
+                .signWith(privateKey, SignatureAlgorithm.RS512)
+                .compact();
+    }
+
+    @Override
+    public Map<String, String> generateJwtTokenPair(UUID uuid, PrivateKey privateKey, UserEntity user) {
+
+        Map<String, String> jwtTokenPair =  new HashMap<>();
+
+        jwtTokenPair.put("accessToken", generateAccessToken(privateKey, user));
+        jwtTokenPair.put("refreshToken", generateRefreshToken(uuid, privateKey, user));
+
+        return jwtTokenPair;
+    }
+
+}

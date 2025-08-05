@@ -1,0 +1,36 @@
+logging:
+  file:
+    name: "logs.log"
+    path: "logs"
+  level:
+    org.springframework.security: DEBUG
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/printer-manager-spring"
+    username: "root"
+    password: ""
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: "update"
+    show-sql: true
+    properties:
+      hibernate:
+        use_sql_comments: true
+
+server:
+  port: 4000
+
+client:
+  url: "http://localhost:3000"
+
+redis:
+  host: 'localhost'
+  port: 6379
+
+jwt:
+  access_token_expire_time: 300
+  refresh_token_expire_time: 86400
