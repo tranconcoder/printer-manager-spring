@@ -1,5 +1,6 @@
 package com.tvconss.printermanagerspring.service.impl;
 
+import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
 import com.tvconss.printermanagerspring.entity.UserEntity;
 import com.tvconss.printermanagerspring.service.JwtService;
 import io.jsonwebtoken.Jwts;
@@ -21,7 +22,7 @@ public class JwtServiceImpl implements JwtService {
     private int refreshTokenExpireTime;
 
     @Override
-    public String generateAccessToken(PrivateKey privateKey, UserEntity user) {
+    public String generateAccessToken(PrivateKey privateKey, JwtPayload user) {
 
         Instant now = Instant.now();
         Instant expireAt = now.plusSeconds(accessTokenExpireTime);
@@ -32,6 +33,7 @@ public class JwtServiceImpl implements JwtService {
                 .claim("userFirstName", user.getUserFirstName())
                 .claim("userLastName", user.getUserLastName())
                 .claim("userEmail", user.getUserEmail())
+                .claim("userGender", user.isUserGender())
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(expireAt))
                 .signWith(privateKey, SignatureAlgorithm.RS256)
@@ -39,7 +41,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateRefreshToken(UUID uuid, PrivateKey privateKey, UserEntity user) {
+    public String generateRefreshToken(UUID uuid, PrivateKey privateKey, JwtPayload user) {
 
         Instant now = Instant.now();
         Instant expireAt = now.plusSeconds(refreshTokenExpireTime);
@@ -51,6 +53,7 @@ public class JwtServiceImpl implements JwtService {
                 .claim("userFirstName", user.getUserFirstName())
                 .claim("userLastName", user.getUserLastName())
                 .claim("userEmail", user.getUserEmail())
+                .claim("userGender", user.isUserGender())
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(expireAt))
                 .signWith(privateKey, SignatureAlgorithm.RS512)
@@ -58,7 +61,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public Map<String, String> generateJwtTokenPair(UUID uuid, PrivateKey privateKey, UserEntity user) {
+    public Map<String, String> generateJwtTokenPair(UUID uuid, PrivateKey privateKey, JwtPayload user) {
 
         Map<String, String> jwtTokenPair =  new HashMap<>();
 
@@ -67,5 +70,6 @@ public class JwtServiceImpl implements JwtService {
 
         return jwtTokenPair;
     }
+
 
 }

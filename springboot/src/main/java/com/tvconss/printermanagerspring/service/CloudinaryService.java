@@ -10,4 +10,6 @@ public interface CloudinaryService {
 
     public Map uploadImage(MultipartFile imageFile, MediaCategory mediaCategory);
 
+    public Map uploadAvatar(MultipartFile imageFile, Long userId);
+
 }

@@ -1,5 +1,6 @@
 package com.tvconss.printermanagerspring.util;
 
+import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
 import com.tvconss.printermanagerspring.dto.response.user.AuthResponse;
 import com.tvconss.printermanagerspring.dto.response.user.JwtTokenPair;
 import com.tvconss.printermanagerspring.dto.response.user.User;
@@ -47,13 +48,20 @@ public class AuthUtil {
         KeyPair rsaKeyPair = this.keyPairGenerator.generateKeyPair();
         PublicKey publicKey = rsaKeyPair.getPublic();
         PrivateKey privateKey = rsaKeyPair.getPrivate();
+        JwtPayload jwtPayload = new JwtPayload();
+
+        jwtPayload.setUserId(user.getUserId());
+        jwtPayload.setUserEmail(user.getUserEmail());
+        jwtPayload.setUserFirstName(user.getUserFirstName());
+        jwtPayload.setUserLastName(user.getUserLastName());
+        jwtPayload.setUserGender(user.isUserGender());
 
 //        Step 2: use private key to create JWT
         UUID jitUUID = UUID.randomUUID();
         Map<String, String> jwtTokenPair = new JwtServiceImpl().generateJwtTokenPair(
                 jitUUID,
                 privateKey,
-                user);
+                jwtPayload);
 
 
 //        Create key token

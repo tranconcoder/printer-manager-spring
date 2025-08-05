@@ -18,7 +18,7 @@ export default function ProfileBox() {
             <ButtonPrimary href="/auth/register">
                <span>Sign up</span>
             </ButtonPrimary>
-         </div>
+         </div>   
       )
 
       return <div>hello wolrd </div>

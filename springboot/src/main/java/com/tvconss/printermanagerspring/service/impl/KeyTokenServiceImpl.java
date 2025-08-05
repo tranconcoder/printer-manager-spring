@@ -3,6 +3,7 @@ package com.tvconss.printermanagerspring.service.impl;
 import com.tvconss.printermanagerspring.dto.internal.KeyToken;
 import com.tvconss.printermanagerspring.service.KeyTokenService;
 import com.tvconss.printermanagerspring.service.RedisService;
+import com.tvconss.printermanagerspring.util.RedisUtil;
 import org.springframework.stereotype.Service;
 
 import java.security.PublicKey;
@@ -19,7 +20,7 @@ public class KeyTokenServiceImpl implements KeyTokenService {
     }
 
     public void createKeyToken(PublicKey publicKey, Long userId, UUID jitUUID) {
-        String redisKey = String.format("auth:key_token:%d", userId);
+        String redisKey = RedisUtil.getKeyTokenHashKey(userId);
         String publicKeyStr = Base64.getEncoder().encodeToString(publicKey.getEncoded());
 
         KeyToken keyToken = new KeyToken();
