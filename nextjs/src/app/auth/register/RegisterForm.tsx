@@ -71,13 +71,12 @@ export default function RegisterForm({ ...props }: RegisterFormProps) {
          setLastLoadingStartAt(Date.now())
       } else {
          console.log(Math.max(0, 1000 - (Date.now() - lastLoadingStartAt)))
-         console.log('')
 
          setTimeout(() => {
             setShowLoadingIcon(false)
          }, Math.max(0, 1000 - (Date.now() - lastLoadingStartAt)))
       }
-   }, [isLoading, lastLoadingStartAt])
+   }, [isLoading]) // eslint-disable-line
 
    return (
       <form {...props} onSubmit={formik.handleSubmit} className="space-y-4">
