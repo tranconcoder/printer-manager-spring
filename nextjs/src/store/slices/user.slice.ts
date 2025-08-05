@@ -74,6 +74,7 @@ export const userSlice = createSlice({
             state.firstName = action.payload.firstName
             state.lastName = action.payload.lastName
             state.email = action.payload.email
+            state.errorMessage = ''
          })
          .addCase(fetchLoginUser.rejected, (state, action) => {
             state.isLoading = false

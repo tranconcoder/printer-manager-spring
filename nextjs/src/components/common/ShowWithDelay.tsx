@@ -5,15 +5,13 @@ export interface LoadingIconProps extends PropsWithChildren {
    minDuration?: number
 }
 
-export default function AppearWithDelay({
+export default function ShowWithDelay({
    minDuration,
    isShow,
    children,
 }: LoadingIconProps) {
    const [isShowIcon, setShowIcon] = useState(isShow)
-   const [lastLoadingStartAt, setLastLoadingStartAt] = React.useState(
-      Date.now()
-   )
+   const [lastLoadingStartAt, setLastLoadingStartAt] = useState(Date.now())
 
    useEffect(() => {
       if (minDuration) {

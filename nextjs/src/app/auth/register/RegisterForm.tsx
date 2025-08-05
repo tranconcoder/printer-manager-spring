@@ -15,7 +15,7 @@ import { LuLockKeyhole } from 'react-icons/lu'
 import { MdAlternateEmail } from 'react-icons/md'
 import { HashLoader } from 'react-spinners'
 import AuthWithGoogleButton from '../AuthWithGoogleButton'
-import AppearWithDelay from '@/components/common/AppearWithDelay'
+import ShowWithDelay from '@/components/common/ShowWithDelay'
 import HideWithDelay from '@/components/common/HideWithDelay'
 
 export type RegisterFormProps = React.HTMLAttributes<HTMLFormElement>
@@ -226,7 +226,7 @@ export default function RegisterForm({ ...props }: RegisterFormProps) {
             )}
          </HideWithDelay>
 
-         <AppearWithDelay isShow={isLoading} minDuration={2000}>
+         <ShowWithDelay isShow={isLoading} minDuration={2000}>
             <HashLoader
                className="mx-auto my-4"
                color="#3b82f6"
@@ -234,7 +234,7 @@ export default function RegisterForm({ ...props }: RegisterFormProps) {
                aria-label="Loading Spinner"
                data-testid="loader"
             />
-         </AppearWithDelay>
+         </ShowWithDelay>
 
          {/* Submit button */}
          <ButtonPrimary className="w-full mt-8" type="submit">

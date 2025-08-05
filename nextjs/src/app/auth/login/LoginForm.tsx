@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import React, { useEffect } from 'react'
@@ -11,9 +12,14 @@ import { useFormik } from 'formik'
 import LoginSchema from '@/schema/Login.schema'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hook'
 import { fetchLoginUser } from '@/store/thunks/user.thunk'
+import HideWithDelay from '@/components/common/HideWithDelay'
+import { HashLoader } from 'react-spinners'
+import ShowWithDelay from '@/components/common/ShowWithDelay'
+import { useRouter } from 'next/navigation'
 
 export default function LoginForm() {
    const dispatch = useAppDispatch()
+   const router = useRouter()
 
    const formik = useFormik({
       initialValues: {
@@ -27,7 +33,14 @@ export default function LoginForm() {
    })
 
    const errorMessage = useAppSelector((state) => state.user.errorMessage)
-   console.log(errorMessage)
+   const isLoading = useAppSelector((state) => state.user.isLoading)
+   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn)
+
+   useEffect(() => {
+      if (isLoggedIn) {
+         router.push('/')
+      }
+   }, [isLoggedIn])
 
    return (
       <form onSubmit={formik.handleSubmit}>
@@ -64,6 +77,23 @@ export default function LoginForm() {
          >
             Quên mật khẩu?
          </Link>
+
+         {/* Loading icon */}
+         <HideWithDelay isShow={isLoading} minDuration={1000}>
+            {errorMessage && (
+               <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+            )}
+         </HideWithDelay>
+
+         <ShowWithDelay isShow={isLoading} minDuration={1000}>
+            <HashLoader
+               className="mx-auto my-4"
+               color="#3b82f6"
+               size={30}
+               aria-label="Loading Spinner"
+               data-testid="loader"
+            />
+         </ShowWithDelay>
 
          {/* Login button */}
          <ButtonPrimary className="mt-6 w-full" type="submit">

@@ -3,11 +3,6 @@ import StoreProvider from '@/components/StoreProvider'
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 
-const roboto = Roboto({
-   variable: '--font-roboto',
-   subsets: ['latin'],
-   display: 'swap',
-})
 
 export const metadata: Metadata = {
    title: 'Create Next App',
@@ -19,11 +14,5 @@ export default function RootLayout({
 }: Readonly<{
    children: React.ReactNode
 }>) {
-   return (
-      <StoreProvider>
-         <html lang="en">
-            <body className={`${roboto.variable} antialiased`}>{children}</body>
-         </html>
-      </StoreProvider>
-   )
+   return <StoreProvider>{children}</StoreProvider>
 }

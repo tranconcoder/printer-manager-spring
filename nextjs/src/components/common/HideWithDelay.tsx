@@ -32,7 +32,5 @@ export default function HideWithDelay({
       }
    }, [isShow]) // eslint-disable-line
 
-   console.log('isShowIcon', isShowIcon)
-
    return !isShowIcon && children
 }

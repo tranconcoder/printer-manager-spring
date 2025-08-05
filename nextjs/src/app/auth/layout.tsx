@@ -14,7 +14,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
 
    // Form title
    const isLoginPage = pathname === '/auth/login'
-   // const isRegisterPage = pathname === "/auth/register";
+   // const isRegisterPage = pathname === '/auth/register'
 
    const formTitle = isLoginPage ? 'Đăng nhập' : 'Đăng ký'
 
