@@ -3222,3 +3222,118 @@ This generated password is for development use only. Your security configuration
 2025-08-05T12:20:58.087Z  INFO 26785 --- [printer-manager-spring] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
 2025-08-05T12:20:58.229Z  INFO 26785 --- [printer-manager-spring] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 4000 (http) with context path '/'
 2025-08-05T12:20:58.262Z  INFO 26785 --- [printer-manager-spring] [restartedMain] c.t.p.PrinterManagerSpringApplication    : Started PrinterManagerSpringApplication in 7.047 seconds (process running for 7.808)
+2025-08-05T12:50:38.187Z  INFO 26785 --- [printer-manager-spring] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-05T12:50:38.209Z  INFO 26785 --- [printer-manager-spring] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-05T12:50:38.287Z  INFO 26785 --- [printer-manager-spring] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-08-05T12:50:38.307Z  INFO 26785 --- [printer-manager-spring] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-08-05T12:50:38.314Z  INFO 26785 --- [printer-manager-spring] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-08-05T12:50:58.705Z  INFO 76473 --- [printer-manager-spring] [restartedMain] c.t.p.PrinterManagerSpringApplication    : Starting PrinterManagerSpringApplication using Java 24.0.1 with PID 76473 (/home/tvconss/Workspace/printer-manager-spring/springboot/build/classes/java/main started by tvconss in /home/tvconss/Workspace/printer-manager-spring/springboot)
+2025-08-05T12:50:58.707Z  INFO 76473 --- [printer-manager-spring] [restartedMain] c.t.p.PrinterManagerSpringApplication    : The following 1 profile is active: "dev"
+2025-08-05T12:50:58.759Z  INFO 76473 --- [printer-manager-spring] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-08-05T12:50:58.759Z  INFO 76473 --- [printer-manager-spring] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-08-05T12:50:59.545Z  INFO 76473 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-08-05T12:50:59.548Z  INFO 76473 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-05T12:50:59.678Z  INFO 76473 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 120 ms. Found 1 JPA repository interface.
+2025-08-05T12:50:59.696Z  INFO 76473 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-08-05T12:50:59.698Z  INFO 76473 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-08-05T12:50:59.716Z  INFO 76473 --- [printer-manager-spring] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.tvconss.printermanagerspring.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-08-05T12:50:59.716Z  INFO 76473 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+2025-08-05T12:51:00.464Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 4000 (http)
+2025-08-05T12:51:00.493Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-05T12:51:00.493Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-05T12:51:00.525Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-05T12:51:00.526Z  INFO 76473 --- [printer-manager-spring] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1766 ms
+2025-08-05T12:51:00.763Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-05T12:51:00.827Z  INFO 76473 --- [printer-manager-spring] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-05T12:51:00.874Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-08-05T12:51:01.382Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-05T12:51:01.422Z  INFO 76473 --- [printer-manager-spring] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-08-05T12:51:02.164Z  INFO 76473 --- [printer-manager-spring] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4503fd3
+2025-08-05T12:51:02.168Z  INFO 76473 --- [printer-manager-spring] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-08-05T12:51:02.345Z  WARN 76473 --- [printer-manager-spring] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-05T12:51:02.371Z  INFO 76473 --- [printer-manager-spring] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-05T12:51:03.594Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-05T12:51:03.752Z  INFO 76473 --- [printer-manager-spring] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-05T12:51:04.562Z  WARN 76473 --- [printer-manager-spring] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-05T12:51:04.768Z  WARN 76473 --- [printer-manager-spring] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 2ce3a28d-9998-4066-9072-41f5a70e933f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-08-05T12:51:04.777Z  INFO 76473 --- [printer-manager-spring] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-08-05T12:51:04.880Z DEBUG 76473 --- [printer-manager-spring] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter
+2025-08-05T12:51:05.307Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-08-05T12:51:05.366Z  INFO 76473 --- [printer-manager-spring] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 4000 (http) with context path '/'
+2025-08-05T12:51:05.379Z  INFO 76473 --- [printer-manager-spring] [restartedMain] c.t.p.PrinterManagerSpringApplication    : Started PrinterManagerSpringApplication in 7.22 seconds (process running for 7.993)
+2025-08-05T13:02:00.156Z  INFO 76473 --- [printer-manager-spring] [http-nio-4000-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-05T13:02:00.171Z  INFO 76473 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-05T13:02:00.210Z  INFO 76473 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 37 ms
+2025-08-05T13:02:00.312Z DEBUG 76473 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /upload/avatar
+2025-08-05T13:02:00.339Z DEBUG 76473 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /upload/avatar
+2025-08-05T13:02:00.642Z  WARN 76473 --- [printer-manager-spring] [http-nio-4000-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [[Tue Aug 05 13:02:00 UTC 2025] Xác thực thất bại: Please enter access token]
+2025-08-05T13:02:00.647Z DEBUG 76473 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-05T13:02:34.559Z  INFO 76473 --- [printer-manager-spring] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-05T13:02:34.586Z  INFO 76473 --- [printer-manager-spring] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-05T13:02:34.694Z  INFO 76473 --- [printer-manager-spring] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-08-05T13:02:34.727Z  INFO 76473 --- [printer-manager-spring] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-08-05T13:02:34.752Z  INFO 76473 --- [printer-manager-spring] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-08-05T13:03:02.118Z  INFO 96472 --- [printer-manager-spring] [restartedMain] c.t.p.PrinterManagerSpringApplication    : Starting PrinterManagerSpringApplication using Java 24.0.1 with PID 96472 (/home/tvconss/Workspace/printer-manager-spring/springboot/build/classes/java/main started by tvconss in /home/tvconss/Workspace/printer-manager-spring/springboot)
+2025-08-05T13:03:02.122Z  INFO 96472 --- [printer-manager-spring] [restartedMain] c.t.p.PrinterManagerSpringApplication    : The following 1 profile is active: "dev"
+2025-08-05T13:03:02.176Z  INFO 96472 --- [printer-manager-spring] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-08-05T13:03:02.176Z  INFO 96472 --- [printer-manager-spring] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-08-05T13:03:02.958Z  INFO 96472 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-08-05T13:03:02.960Z  INFO 96472 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-05T13:03:03.092Z  INFO 96472 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 122 ms. Found 1 JPA repository interface.
+2025-08-05T13:03:03.109Z  INFO 96472 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-08-05T13:03:03.111Z  INFO 96472 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-08-05T13:03:03.129Z  INFO 96472 --- [printer-manager-spring] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.tvconss.printermanagerspring.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-08-05T13:03:03.129Z  INFO 96472 --- [printer-manager-spring] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+2025-08-05T13:03:03.731Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 4000 (http)
+2025-08-05T13:03:03.766Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-05T13:03:03.767Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-05T13:03:03.808Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-05T13:03:03.809Z  INFO 96472 --- [printer-manager-spring] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1631 ms
+2025-08-05T13:03:04.063Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-05T13:03:04.139Z  INFO 96472 --- [printer-manager-spring] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-05T13:03:04.184Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-08-05T13:03:04.568Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-05T13:03:04.601Z  INFO 96472 --- [printer-manager-spring] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-08-05T13:03:05.090Z  INFO 96472 --- [printer-manager-spring] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@305f04fc
+2025-08-05T13:03:05.093Z  INFO 96472 --- [printer-manager-spring] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-08-05T13:03:05.189Z  WARN 96472 --- [printer-manager-spring] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-05T13:03:05.213Z  INFO 96472 --- [printer-manager-spring] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-05T13:03:06.280Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-05T13:03:06.590Z  INFO 96472 --- [printer-manager-spring] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-05T13:03:07.360Z  WARN 96472 --- [printer-manager-spring] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-05T13:03:07.552Z  WARN 96472 --- [printer-manager-spring] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: f4579f6b-74da-48ba-abb5-1c34a5009acc
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-08-05T13:03:07.561Z  INFO 96472 --- [printer-manager-spring] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-08-05T13:03:07.655Z DEBUG 96472 --- [printer-manager-spring] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter
+2025-08-05T13:03:08.001Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-08-05T13:03:08.039Z  INFO 96472 --- [printer-manager-spring] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 4000 (http) with context path '/'
+2025-08-05T13:03:08.049Z  INFO 96472 --- [printer-manager-spring] [restartedMain] c.t.p.PrinterManagerSpringApplication    : Started PrinterManagerSpringApplication in 6.438 seconds (process running for 7.235)
+2025-08-05T13:03:30.003Z  INFO 96472 --- [printer-manager-spring] [http-nio-4000-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-05T13:03:30.003Z  INFO 96472 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-05T13:03:30.007Z  INFO 96472 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2025-08-05T13:03:30.025Z DEBUG 96472 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /upload/avatar
+2025-08-05T13:03:30.034Z DEBUG 96472 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /upload/avatar
+2025-08-05T13:03:33.242Z DEBUG 96472 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext

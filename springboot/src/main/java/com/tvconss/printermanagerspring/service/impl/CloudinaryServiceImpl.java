@@ -19,11 +19,15 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         this.cloudinary = cloudinary;
     }
 
-    public Map uploadImage(MultipartFile imageFile, MediaCategory mediaCategory) throws IOException {
-        Map params = ObjectUtils.asMap(
-            "folder", mediaCategory.getMediaCategory()
-        );
+    public Map uploadImage(MultipartFile imageFile, MediaCategory mediaCategory) {
+        try{
+            Map params = ObjectUtils.asMap(
+                "folder", mediaCategory.getMediaCategory()
+            );
 
-        return this.cloudinary.uploader().upload(imageFile.getBytes(), params);
+            return this.cloudinary.uploader().upload(imageFile.getBytes(), params);
+        } catch(IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

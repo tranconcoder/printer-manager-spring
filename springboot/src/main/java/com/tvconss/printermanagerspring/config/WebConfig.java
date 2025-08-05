@@ -14,6 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(org.springframework.web.servlet.config.annotation.InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/auth/**");
+                .excludePathPatterns("/auth/**")
+                .excludePathPatterns("/upload/**"); // Test only
     }
 }

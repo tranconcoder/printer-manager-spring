@@ -8,6 +8,6 @@ import java.util.Map;
 
 public interface CloudinaryService {
 
-    public Map uploadImage(MultipartFile imageFile, MediaCategory mediaCategory) throws IOException;
+    public Map uploadImage(MultipartFile imageFile, MediaCategory mediaCategory);
 
 }
