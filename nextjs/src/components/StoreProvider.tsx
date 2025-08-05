@@ -26,7 +26,7 @@ export default function StoreProvider({
       persistorRef.current = persistStore(storeRef.current)
    }
 
-   // Check user is logged in
+   // Check user is logged in with api
 
    return (
       <html lang="en">

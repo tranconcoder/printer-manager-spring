@@ -18,7 +18,6 @@ public class AuthRegisterRequest {
             message = "Password must have lowercase, uppercase, number and special character; length 8-24")
     private String password;
 
-
     @NotBlank(message = "First name is required!")
     private String firstName;
 

@@ -6,6 +6,9 @@ logging:
     org.springframework.security: DEBUG
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
   datasource:
     url: "jdbc:mysql://localhost:3306/printer-manager-spring"
     username: "root"
@@ -22,7 +25,7 @@ spring:
         use_sql_comments: true
 
 server:
-  port: 4000
+  port: ${PORT:4000}
 
 client:
   url: "http://localhost:3000"
@@ -34,3 +37,6 @@ redis:
 jwt:
   access_token_expire_time: 300
   refresh_token_expire_time: 86400
+
+cloudinary:
+  url: ${CLOUDINARY_URL}

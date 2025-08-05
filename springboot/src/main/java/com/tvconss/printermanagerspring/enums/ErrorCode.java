@@ -31,16 +31,4 @@ public enum ErrorCode {
         this.errorMessage = errorMessage;
         this.errorHttpCode = errorHttpCode;
     }
-
-//    public String getErrorCode() {
-//        return this.errorCode;
-//    }
-//
-//    public String getErrorMessage() {
-//        return this.errorMessage;
-//    }
-//
-//    public Integer getErrorHttpCode() {
-//        return this.errorHttpCode.value();
-//    }
 }
