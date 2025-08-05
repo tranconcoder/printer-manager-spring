@@ -4,6 +4,7 @@ import ButtonPrimary from '@/components/common/ButtonPrimary'
 import Input from '@/components/common/Input/Input'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hook'
 import RegisterSchema from '@/schema/Register.schema'
+import { setErrorMessage } from '@/store/slices/user.slice'
 import { fetchRegisterUser } from '@/store/thunks/user.thunk'
 import { RegisterPayload } from '@/types/https/auth.request'
 import { useFormik } from 'formik'
@@ -12,8 +13,10 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { FaRegAddressCard } from 'react-icons/fa6'
 import { LuLockKeyhole } from 'react-icons/lu'
 import { MdAlternateEmail } from 'react-icons/md'
-import AuthWithGoogleButton from '../AuthWithGoogleButton'
 import { HashLoader } from 'react-spinners'
+import AuthWithGoogleButton from '../AuthWithGoogleButton'
+import AppearWithDelay from '@/components/common/AppearWithDelay'
+import HideWithDelay from '@/components/common/HideWithDelay'
 
 export type RegisterFormProps = React.HTMLAttributes<HTMLFormElement>
 
@@ -56,8 +59,6 @@ export default function RegisterForm({ ...props }: RegisterFormProps) {
    const errorMessage = useAppSelector((state) => state.user.errorMessage)
    const isLoading = useAppSelector((state) => state.user.isLoading)
    const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn)
-   const [isShowLoadingIcon, setShowLoadingIcon] = useState(isLoading)
-   const [lastLoadingStartAt, setLastLoadingStartAt] = useState(Date.now())
 
    useEffect(() => {
       if (isLoggedIn) {
@@ -66,17 +67,11 @@ export default function RegisterForm({ ...props }: RegisterFormProps) {
    }, [isLoggedIn]) // eslint-disable-line
 
    useEffect(() => {
-      if (isLoading) {
-         setShowLoadingIcon(true)
-         setLastLoadingStartAt(Date.now())
-      } else {
-         console.log(Math.max(0, 1000 - (Date.now() - lastLoadingStartAt)))
-
-         setTimeout(() => {
-            setShowLoadingIcon(false)
-         }, Math.max(0, 1000 - (Date.now() - lastLoadingStartAt)))
+      return () => {
+         dispatch(setErrorMessage(''))
+         console.log('Reset error message on unmount')
       }
-   }, [isLoading]) // eslint-disable-line
+   }, []) // eslint-disable-line
 
    return (
       <form {...props} onSubmit={formik.handleSubmit} className="space-y-4">
@@ -225,21 +220,21 @@ export default function RegisterForm({ ...props }: RegisterFormProps) {
             {formik.touched.confirmedTerms && formik.errors.confirmedTerms}
          </p>
 
-         {!isShowLoadingIcon && errorMessage && (
-            <p className="text-red-500 text-sm">{errorMessage}</p>
-         )}
+         <HideWithDelay isShow={isLoading} minDuration={2000}>
+            {errorMessage && (
+               <p className="text-red-500 text-sm">{errorMessage}</p>
+            )}
+         </HideWithDelay>
 
-         {isShowLoadingIcon && (
-            <Fragment>
-               <HashLoader
-                  className="mx-auto my-4"
-                  color="#3b82f6"
-                  size={30}
-                  aria-label="Loading Spinner"
-                  data-testid="loader"
-               />
-            </Fragment>
-         )}
+         <AppearWithDelay isShow={isLoading} minDuration={2000}>
+            <HashLoader
+               className="mx-auto my-4"
+               color="#3b82f6"
+               size={30}
+               aria-label="Loading Spinner"
+               data-testid="loader"
+            />
+         </AppearWithDelay>
 
          {/* Submit button */}
          <ButtonPrimary className="w-full mt-8" type="submit">

@@ -32,6 +32,11 @@ export const userSlice = createSlice({
             ...action.payload,
          }
       },
+
+      setErrorMessage: (state, action: PayloadAction<string>) => {
+         state.errorMessage = action.payload
+         console.error('Error message set:', action.payload)
+      },
    },
    extraReducers: (builder) => {
       builder
@@ -78,6 +83,6 @@ export const userSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser } = userSlice.actions
+export const { setUser, setErrorMessage } = userSlice.actions
 
 export default userSlice.reducer

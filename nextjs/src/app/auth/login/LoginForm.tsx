@@ -1,76 +1,82 @@
-"use client";
+'use client'
 
-import React from "react";
-import ButtonPrimary from "@/components/common/ButtonPrimary";
-import Input from "@/components/common/Input/Input";
-import { FaUserAlt } from "react-icons/fa";
-import { FaLock } from "react-icons/fa6";
-import Link from "next/link";
-import AuthWithGoogleButton from "../AuthWithGoogleButton";
-import { useFormik } from "formik";
-import LoginSchema from "@/schema/Login.schema";
+import React, { useEffect } from 'react'
+import ButtonPrimary from '@/components/common/ButtonPrimary'
+import Input from '@/components/common/Input/Input'
+import { FaUserAlt } from 'react-icons/fa'
+import { FaLock } from 'react-icons/fa6'
+import Link from 'next/link'
+import AuthWithGoogleButton from '../AuthWithGoogleButton'
+import { useFormik } from 'formik'
+import LoginSchema from '@/schema/Login.schema'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux.hook'
+import { fetchLoginUser } from '@/store/thunks/user.thunk'
 
 export default function LoginForm() {
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: (values) => {
-      // Handle form submission logic here
-      console.log("Form submitted with values:", values);
-    },
-    validationSchema: LoginSchema,
-  });
+   const dispatch = useAppDispatch()
 
-  return (
-    <form onSubmit={formik.handleSubmit}>
-      {/* Username */}
-      <Input
-        name="email"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.email}
-        errorMessage={formik.touched.email ? formik.errors.email : ""}
-        icon={FaUserAlt}
-      >
-        Email đăng nhập
-      </Input>
+   const formik = useFormik({
+      initialValues: {
+         email: '',
+         password: '',
+      },
+      onSubmit: (values) => {
+         dispatch(fetchLoginUser(values))
+      },
+      validationSchema: LoginSchema,
+   })
 
-      {/* Password */}
-      <Input
-        name="password"
-        icon={FaLock}
-        togglePassword
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.password}
-        type="password"
-        errorMessage={formik.touched.password ? formik.errors.password : ""}
-      >
-        Mật khẩu
-      </Input>
+   const errorMessage = useAppSelector((state) => state.user.errorMessage)
+   console.log(errorMessage)
 
-      {/* Forgot password link */}
-      <Link
-        className="block mt-4 text-sm text-gray-600 hover:underline text-right"
-        href="/auth/forgot-password"
-      >
-        Quên mật khẩu?
-      </Link>
+   return (
+      <form onSubmit={formik.handleSubmit}>
+         {/* Username */}
+         <Input
+            name="email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
+            errorMessage={formik.touched.email ? formik.errors.email : ''}
+            icon={FaUserAlt}
+         >
+            Email đăng nhập
+         </Input>
 
-      {/* Login button */}
-      <ButtonPrimary className="mt-6 w-full" type="submit">
-        Đăng nhập
-      </ButtonPrimary>
+         {/* Password */}
+         <Input
+            name="password"
+            icon={FaLock}
+            togglePassword
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+            type="password"
+            errorMessage={formik.touched.password ? formik.errors.password : ''}
+         >
+            Mật khẩu
+         </Input>
 
-      {/* Or with Google */}
-      <span className="text-sm italic block text-center my-4">Hoặc</span>
+         {/* Forgot password link */}
+         <Link
+            className="block mt-4 text-sm text-gray-600 hover:underline text-right"
+            href="/auth/forgot-password"
+         >
+            Quên mật khẩu?
+         </Link>
 
-      {/* Google authentication button */}
-      <AuthWithGoogleButton>
-        Đăng nhập bằng tài khoản Google
-      </AuthWithGoogleButton>
-    </form>
-  );
+         {/* Login button */}
+         <ButtonPrimary className="mt-6 w-full" type="submit">
+            Đăng nhập
+         </ButtonPrimary>
+
+         {/* Or with Google */}
+         <span className="text-sm italic block text-center my-4">Hoặc</span>
+
+         {/* Google authentication button */}
+         <AuthWithGoogleButton>
+            Đăng nhập bằng tài khoản Google
+         </AuthWithGoogleButton>
+      </form>
+   )
 }

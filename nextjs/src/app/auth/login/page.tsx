@@ -1,17 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next'
 
-import React, { Fragment } from "react";
-import LoginForm from "./LoginForm";
+import React, { Fragment } from 'react'
+import LoginForm from './LoginForm'
 
 export const metadata: Metadata = {
-  title: "Đăng nhập - Welcome to tvconss!",
-  description: "Logo component for the application",
-};
+   title: 'Đăng nhập - Welcome to tvconss!',
+   description: 'Logo component for the application',
+   keywords: ['login', 'authentication', 'tvconss'],
+}
 
 export default function LoginPage() {
-  return (
-    <Fragment>
-      <LoginForm />
-    </Fragment>
-  );
+   return (
+      <Fragment>
+         <LoginForm />
+      </Fragment>
+   )
 }
