@@ -85,6 +85,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public JwtTokenPair refreshToken(String refreshToken) {
-        return null;
+//        if (refreshToken == null || refreshToken.isEmpty()) {
+//        }
     }
 }

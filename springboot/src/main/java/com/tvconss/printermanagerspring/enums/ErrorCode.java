@@ -9,12 +9,14 @@ public enum ErrorCode {
 //    Server
     INTERNAL_SERVER_ERROR("INTERNAL_0000", "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
     PAGE_NOT_FOUND("INTERNAL_0001", "Page not found", HttpStatus.NOT_FOUND),
-    MISSING_PAYLOAD("INTERNAL_0002", "Missing or conflict payload fields in request body"),
+    MISSING_PAYLOAD("INTERNAL_0002", "Payload bị thiếu hoặc không hợp lệ"),
 
 //    Authenticate
     AUTH_ERROR_INTERNAL("AUTH_0100", "Auth error internal", HttpStatus.INTERNAL_SERVER_ERROR),
-    AUTH_USER_ALREADY_EXIST("AUTH_0101", "Tài khoản đã có người sử dụng"),
-    AUTH_FAILED("AUTH_0102", "Xác thực thất bại", HttpStatus.UNAUTHORIZED),;
+    AUTH_USER_ALREADY_EXIST("AUTH_0101", "Tài khoản đã có người sử dụng", HttpStatus.FORBIDDEN),
+    AUTH_FAILED("AUTH_0102", "Xác thực thất bại", HttpStatus.UNAUTHORIZED),
+    AUTH_MISSING_TOKEN("AUTH_0103", "Thiếu token xác thực", HttpStatus.UNAUTHORIZED),
+    AUTH_INVALID_TOKEN("AUTH_0104", "Token xác thực không hợp lệ", HttpStatus.UNAUTHORIZED);
 
     public final String errorCode;
     public final String errorMessage;

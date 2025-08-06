@@ -35,18 +35,18 @@ public class AuthInterceptor implements HandlerInterceptor {
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader == null) {
-            throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Please enter access token");
+            throw new ErrorResponse(ErrorCode.AUTH_MISSING_TOKEN, "Please enter access token");
         }
 
 //        Validate token in header
         if (!authorizationHeader.startsWith("Bearer ")) {
-            throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Please use bearer token");
+            throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Please use bearer token");
         }
 
 //        Get token and verify
         String token = authorizationHeader.substring(7);
         if (token.isEmpty()) {
-            throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Token is empty");
+            throw new ErrorResponse(ErrorCode.AUTH_MISSING_TOKEN, "Token is empty");
         }
 
 //        Parse payload -> get user id -> get key token
@@ -54,7 +54,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         String[] segments = token.split("\\.");
         if (segments.length != 3) {
-            throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
+            throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Invalid token");
         }
         String payload = new String(decoder.decode(segments[1]));
 
@@ -63,7 +63,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         long jti = jsonNode.get("jti").asLong(-1);
 
         if (userId == -1 || jti == -1) {
-            throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
+            throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Invalid token");
         }
 
 //        Get key token with userId
@@ -71,7 +71,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         String keyTokenKey = String.format("%d:%d", userId, jti);
         Optional<KeyTokenEntity> keyToken = this.keyTokenRedisRepository.findById(keyTokenKey);
         if (keyToken.isEmpty()) {
-            throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
+            throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Invalid token");
         }
 
 //        Verify jwt

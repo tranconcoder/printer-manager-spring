@@ -25,9 +25,6 @@ public class JwtServiceImpl implements JwtService {
         Instant now = Instant.now();
         Instant expireAt = now.plusSeconds(this.accessTokenExpireTime);
 
-        System.out.println(now);
-        System.out.println(expireAt);
-
         return Jwts.builder()
                 .setId(jti.toString())
                 .setSubject(user.getUserId().toString())
