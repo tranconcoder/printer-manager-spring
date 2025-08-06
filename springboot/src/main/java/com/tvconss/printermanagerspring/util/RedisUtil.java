@@ -13,14 +13,12 @@ public class RedisUtil {
     private StringRedisTemplate stringRedisTemplate;
 
     public Long getNextJti(Long userId) {
-        String key = String.format("auth:key_token:%d:counter", userId);
+        String key = String.format("user:key_token:%d:counter", userId);
 
-        Long nextCounter = this.stringRedisTemplate.opsForValue().increment(key);
-
-        return nextCounter;
+        return this.stringRedisTemplate.opsForValue().increment(key);
     }
 
-    public String getKeyTokenHashKey(Long userId, Long jti) {
-        return String.format("auth:key_token:%d:%d", userId, jti);
+    public String getKeyTokenKey(Long userId, Long jti) {
+        return String.format("%d:%d", userId, jti);
     }
 }

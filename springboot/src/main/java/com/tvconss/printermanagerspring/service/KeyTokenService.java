@@ -1,9 +1,6 @@
 package com.tvconss.printermanagerspring.service;
 
-import com.tvconss.printermanagerspring.dto.internal.KeyToken;
-
 import java.security.PublicKey;
-import java.util.UUID;
 
 public interface KeyTokenService {
 

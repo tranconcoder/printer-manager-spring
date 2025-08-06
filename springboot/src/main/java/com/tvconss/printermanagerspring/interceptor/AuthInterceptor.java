@@ -2,8 +2,6 @@ package com.tvconss.printermanagerspring.interceptor;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tvconss.printermanagerspring.dto.internal.KeyToken;
-import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
 import com.tvconss.printermanagerspring.entity.KeyTokenEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
@@ -11,7 +9,6 @@ import com.tvconss.printermanagerspring.repository.KeyTokenRedisRepository;
 import com.tvconss.printermanagerspring.service.impl.KeyTokenServiceImpl;
 import com.tvconss.printermanagerspring.util.JwtUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,18 +18,15 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.security.PublicKey;
 import java.util.Base64;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final ObjectMapper objectMapper;
-    private final KeyTokenServiceImpl keyTokenService;
     private final KeyTokenRedisRepository keyTokenRedisRepository;
 
-    public AuthInterceptor(ObjectMapper objectMapper, KeyTokenServiceImpl keyTokenService, KeyTokenRedisRepository keyTokenRedisRepository) {
+    public AuthInterceptor(ObjectMapper objectMapper, KeyTokenRedisRepository keyTokenRedisRepository) {
         this.objectMapper = objectMapper;
-        this.keyTokenService = keyTokenService;
         this.keyTokenRedisRepository = keyTokenRedisRepository;
     }
 
@@ -51,7 +45,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 //        Get token and verify
         String token = authorizationHeader.substring(7);
-        if (token.length() == 0) {
+        if (token.isEmpty()) {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Token is empty");
         }
 
@@ -65,8 +59,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         String payload = new String(decoder.decode(segments[1]));
 
         JsonNode jsonNode = this.objectMapper.readTree(payload);
-        Long userId = jsonNode.get("userId").asLong(-1);
-        Long jti = jsonNode.get("jti").asLong(-1);
+        long userId = jsonNode.get("userId").asLong(-1);
+        long jti = jsonNode.get("jti").asLong(-1);
 
         if (userId == -1 || jti == -1) {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
@@ -76,7 +70,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 //        KeyToken keyToken = this.keyTokenService.getKeyTokenByUserId(userId, jti);
         String keyTokenKey = String.format("%d:%d", userId, jti);
         Optional<KeyTokenEntity> keyToken = this.keyTokenRedisRepository.findById(keyTokenKey);
-        if (!keyToken.isPresent()) {
+        if (keyToken.isEmpty()) {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
         }
 
