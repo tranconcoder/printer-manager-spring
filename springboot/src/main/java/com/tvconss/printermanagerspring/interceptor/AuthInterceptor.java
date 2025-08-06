@@ -7,11 +7,16 @@ import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
 import com.tvconss.printermanagerspring.service.impl.KeyTokenServiceImpl;
+import com.tvconss.printermanagerspring.util.JwtUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.security.PublicKey;
 import java.util.Base64;
 
 @Component
@@ -66,7 +71,26 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (keyToken == null) {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
         }
+        System.out.println("KeyToken:::" + keyToken);
 
-        return false;
+//        Verify jwt
+        try {
+            PublicKey publicKey = JwtUtil.convertBase64ToPublicKey(keyToken.getPublicKey());
+
+            System.out.println(publicKey);
+
+            Claims jwtPayload = Jwts.parserBuilder()
+                    .setSigningKey(publicKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            
+//            Set request attribute
+            request.setAttribute("jwtPayload", jwtPayload);
+        } catch(Exception e) {
+            throw new ErrorResponse(ErrorCode.AUTH_FAILED, e.getMessage());
+        }
+
+        return true;
     }
 }

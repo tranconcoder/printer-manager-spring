@@ -1,7 +1,6 @@
 package com.tvconss.printermanagerspring.service.impl;
 
 import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
-import com.tvconss.printermanagerspring.entity.UserEntity;
 import com.tvconss.printermanagerspring.service.JwtService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,9 +22,11 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateAccessToken(PrivateKey privateKey, JwtPayload user) {
-
         Instant now = Instant.now();
-        Instant expireAt = now.plusSeconds(accessTokenExpireTime);
+        Instant expireAt = now.plusSeconds(this.accessTokenExpireTime);
+
+        System.out.println(now);
+        System.out.println(expireAt);
 
         return Jwts.builder()
                 .setSubject(user.getUserId().toString())
@@ -42,9 +43,8 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateRefreshToken(UUID uuid, PrivateKey privateKey, JwtPayload user) {
-
         Instant now = Instant.now();
-        Instant expireAt = now.plusSeconds(refreshTokenExpireTime);
+        Instant expireAt = now.plusSeconds(this.refreshTokenExpireTime);
 
         return Jwts.builder()
                 .setId(uuid.toString())

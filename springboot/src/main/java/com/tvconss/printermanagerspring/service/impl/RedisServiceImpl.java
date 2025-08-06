@@ -1,8 +1,10 @@
 package com.tvconss.printermanagerspring.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tvconss.printermanagerspring.dto.internal.KeyToken;
 import com.tvconss.printermanagerspring.service.RedisService;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.hash.Jackson2HashMapper;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,9 @@ import java.util.Map;
 
 @Service
 public class RedisServiceImpl implements RedisService {
+
+    @Autowired
+    private ObjectMapper objectMapper ;
 
     @Resource(name = "redisTemplate")
     private HashOperations<String, String, Object> hashOperations;
@@ -31,7 +36,10 @@ public class RedisServiceImpl implements RedisService {
     public KeyToken loadKeyTokenHash(String key) {
         Map<String, Object> keyTokenMap = hashOperations.entries(key);
 
-        return (KeyToken) hashMapper.fromHash(keyTokenMap);
+        System.out.println("KEY ");
+        if (keyTokenMap == null) return null;
+
+        return this.objectMapper.convertValue(keyTokenMap, KeyToken.class);
     }
 
 }

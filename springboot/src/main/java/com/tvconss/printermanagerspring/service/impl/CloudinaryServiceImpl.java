@@ -38,7 +38,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             String publicId = String.format("user/avatar/%d", userId);
 
             Map params = ObjectUtils.asMap(
-                "folder", MediaCategory.MEDIA_AVATAR.getMediaCategory(),
+//                "folder", MediaCategory.MEDIA_AVATAR.getMediaCategory(),
                 "public_id", publicId,
                 "overwrite", true
             );

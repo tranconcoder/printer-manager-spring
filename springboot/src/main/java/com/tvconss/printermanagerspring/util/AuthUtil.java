@@ -58,7 +58,7 @@ public class AuthUtil {
 
 //        Step 2: use private key to create JWT
         UUID jitUUID = UUID.randomUUID();
-        Map<String, String> jwtTokenPair = new JwtServiceImpl().generateJwtTokenPair(
+        Map<String, String> jwtTokenPair = this.jwtService.generateJwtTokenPair(
                 jitUUID,
                 privateKey,
                 jwtPayload);
