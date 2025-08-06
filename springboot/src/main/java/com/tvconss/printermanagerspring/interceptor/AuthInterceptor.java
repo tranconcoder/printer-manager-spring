@@ -18,6 +18,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.security.PublicKey;
 import java.util.Base64;
+import java.util.UUID;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
@@ -57,27 +58,24 @@ public class AuthInterceptor implements HandlerInterceptor {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
         }
         String payload = new String(decoder.decode(segments[1]));
-        System.out.println(payload);
 
         JsonNode jsonNode = this.objectMapper.readTree(payload);
         Long userId = jsonNode.get("userId").asLong(-1);
+        Long jti = jsonNode.get("jti").asLong(-1);
 
-        if (userId == -1) {
+        if (userId == -1 || jti == -1) {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
         }
 
 //        Get key token with userId
-        KeyToken keyToken = this.keyTokenService.getKeyTokenByUserId(userId);
+        KeyToken keyToken = this.keyTokenService.getKeyTokenByUserId(userId, jti);
         if (keyToken == null) {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
         }
-        System.out.println("KeyToken:::" + keyToken);
 
 //        Verify jwt
         try {
             PublicKey publicKey = JwtUtil.convertBase64ToPublicKey(keyToken.getPublicKey());
-
-            System.out.println(publicKey);
 
             Claims jwtPayload = Jwts.parserBuilder()
                     .setSigningKey(publicKey)

@@ -21,7 +21,7 @@ public class JwtServiceImpl implements JwtService {
     private int refreshTokenExpireTime;
 
     @Override
-    public String generateAccessToken(PrivateKey privateKey, JwtPayload user) {
+    public String generateAccessToken(Long jti, PrivateKey privateKey, JwtPayload user) {
         Instant now = Instant.now();
         Instant expireAt = now.plusSeconds(this.accessTokenExpireTime);
 
@@ -29,6 +29,7 @@ public class JwtServiceImpl implements JwtService {
         System.out.println(expireAt);
 
         return Jwts.builder()
+                .setId(jti.toString())
                 .setSubject(user.getUserId().toString())
                 .claim("userId", user.getUserId())
                 .claim("userFirstName", user.getUserFirstName())
@@ -42,12 +43,12 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateRefreshToken(UUID uuid, PrivateKey privateKey, JwtPayload user) {
+    public String generateRefreshToken(Long jti, PrivateKey privateKey, JwtPayload user) {
         Instant now = Instant.now();
         Instant expireAt = now.plusSeconds(this.refreshTokenExpireTime);
 
         return Jwts.builder()
-                .setId(uuid.toString())
+                .setId(jti.toString())
                 .setSubject(user.getUserId().toString())
                 .claim("userId", user.getUserId())
                 .claim("userFirstName", user.getUserFirstName())
@@ -61,15 +62,13 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public Map<String, String> generateJwtTokenPair(UUID uuid, PrivateKey privateKey, JwtPayload user) {
+    public Map<String, String> generateJwtTokenPair(Long jti, PrivateKey privateKey, JwtPayload user) {
 
         Map<String, String> jwtTokenPair =  new HashMap<>();
 
-        jwtTokenPair.put("accessToken", generateAccessToken(privateKey, user));
-        jwtTokenPair.put("refreshToken", generateRefreshToken(uuid, privateKey, user));
+        jwtTokenPair.put("accessToken", generateAccessToken(jti, privateKey, user));
+        jwtTokenPair.put("refreshToken", generateRefreshToken(jti, privateKey, user));
 
         return jwtTokenPair;
     }
-
-
 }

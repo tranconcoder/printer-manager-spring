@@ -36,8 +36,8 @@ public class RedisServiceImpl implements RedisService {
     public KeyToken loadKeyTokenHash(String key) {
         Map<String, Object> keyTokenMap = hashOperations.entries(key);
 
-        System.out.println("KEY ");
-        if (keyTokenMap == null) return null;
+        if (keyTokenMap == null || keyTokenMap.isEmpty())
+            return null;
 
         return this.objectMapper.convertValue(keyTokenMap, KeyToken.class);
     }

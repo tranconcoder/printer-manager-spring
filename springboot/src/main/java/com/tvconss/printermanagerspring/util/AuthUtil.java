@@ -23,11 +23,13 @@ public class AuthUtil {
     private KeyTokenService keyTokenService;
     private PasswordEncoder passwordEncoder;
     private KeyPairGenerator keyPairGenerator;
+    private RedisUtil redisUtil;
 
-    public AuthUtil(JwtServiceImpl jwtService, KeyTokenService keyTokenService, PasswordEncoder passwordEncoder) {
+    public AuthUtil(JwtServiceImpl jwtService, KeyTokenService keyTokenService, PasswordEncoder passwordEncoder, RedisUtil redisUtil) {
         this.jwtService = jwtService;
         this.keyTokenService = keyTokenService;
         this.passwordEncoder = passwordEncoder;
+        this.redisUtil = redisUtil;
 
         try {
             this.keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -57,15 +59,15 @@ public class AuthUtil {
         jwtPayload.setUserGender(user.isUserGender());
 
 //        Step 2: use private key to create JWT
-        UUID jitUUID = UUID.randomUUID();
+        Long jti = this.redisUtil.getNextJti(user.getUserId());
         Map<String, String> jwtTokenPair = this.jwtService.generateJwtTokenPair(
-                jitUUID,
+                jti,
                 privateKey,
                 jwtPayload);
 
 
 //        Create key token
-        this.keyTokenService.createKeyToken(publicKey, user.getUserId(), jitUUID);
+        this.keyTokenService.createKeyToken(publicKey, user.getUserId(), jti);
 
 
 //        Response token and information to user registration

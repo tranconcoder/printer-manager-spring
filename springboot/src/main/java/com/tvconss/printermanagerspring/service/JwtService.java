@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public interface JwtService {
 
-    public String generateAccessToken(PrivateKey privateKey, JwtPayload user);
+    public String generateAccessToken(Long jti, PrivateKey privateKey, JwtPayload user);
 
-    public String generateRefreshToken(UUID uuid, PrivateKey privateKey, JwtPayload user);
+    public String generateRefreshToken(Long jti, PrivateKey privateKey, JwtPayload user);
 
-    public Map<String, String> generateJwtTokenPair(UUID uuid, PrivateKey privateKey, JwtPayload user);
+    public Map<String, String> generateJwtTokenPair(Long jti, PrivateKey privateKey, JwtPayload user);
 }

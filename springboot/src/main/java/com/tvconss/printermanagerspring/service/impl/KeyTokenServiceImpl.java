@@ -14,26 +14,28 @@ import java.util.UUID;
 public class KeyTokenServiceImpl implements KeyTokenService {
 
     private RedisService redisService;
+    private RedisUtil redisUtil ;
 
-    public KeyTokenServiceImpl(RedisService redisService) {
+    public KeyTokenServiceImpl(RedisService redisService, RedisUtil redisUtil) {
         this.redisService = redisService;
+        this.redisUtil = redisUtil;
     }
 
-    public void createKeyToken(PublicKey publicKey, Long userId, UUID jitUUID) {
-        String redisKey = RedisUtil.getKeyTokenHashKey(userId);
+    public void createKeyToken(PublicKey publicKey, Long userId, Long jti) {
+        String redisKey = this.redisUtil.getKeyTokenHashKey(userId, jti);
         String publicKeyStr = Base64.getEncoder().encodeToString(publicKey.getEncoded());
 
         KeyToken keyToken = new KeyToken();
         keyToken.setUserId(userId);
         keyToken.setPublicKey(publicKeyStr);
-        keyToken.setJit(jitUUID.toString());
+        keyToken.setJit(jti.toString());
 
 
         this.redisService.writeKeyTokenHash(redisKey, keyToken);
     }
 
-    public KeyToken getKeyTokenByUserId(Long userId) {
-        String redisKey = String.format("auth:key_token:%d", userId);
+    public KeyToken getKeyTokenByUserId(Long userId, Long jti) {
+        String redisKey = this.redisUtil.getKeyTokenHashKey(userId, jti);
 
         KeyToken keyToken = this.redisService.loadKeyTokenHash(redisKey);
 
