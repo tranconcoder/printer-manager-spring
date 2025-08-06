@@ -1,44 +1,48 @@
 package com.tvconss.printermanagerspring.service.impl;
 
-import com.tvconss.printermanagerspring.dto.internal.KeyToken;
+import com.tvconss.printermanagerspring.entity.KeyTokenEntity;
+import com.tvconss.printermanagerspring.enums.ErrorCode;
+import com.tvconss.printermanagerspring.exception.ErrorResponse;
+import com.tvconss.printermanagerspring.repository.KeyTokenRedisRepository;
 import com.tvconss.printermanagerspring.service.KeyTokenService;
-import com.tvconss.printermanagerspring.service.RedisService;
 import com.tvconss.printermanagerspring.util.RedisUtil;
 import org.springframework.stereotype.Service;
 
 import java.security.PublicKey;
 import java.util.Base64;
-import java.util.UUID;
 
 @Service
 public class KeyTokenServiceImpl implements KeyTokenService {
 
-    private RedisService redisService;
+    private KeyTokenRedisRepository keyTokenRedisRepository;
     private RedisUtil redisUtil ;
 
-    public KeyTokenServiceImpl(RedisService redisService, RedisUtil redisUtil) {
-        this.redisService = redisService;
+    public KeyTokenServiceImpl(RedisUtil redisUtil, KeyTokenRedisRepository keyTokenRedisRepository) {
         this.redisUtil = redisUtil;
+        this.keyTokenRedisRepository = keyTokenRedisRepository;
     }
-
+    
     public void createKeyToken(PublicKey publicKey, Long userId, Long jti) {
         String redisKey = this.redisUtil.getKeyTokenHashKey(userId, jti);
         String publicKeyStr = Base64.getEncoder().encodeToString(publicKey.getEncoded());
 
-        KeyToken keyToken = new KeyToken();
+        KeyTokenEntity keyToken = new KeyTokenEntity();
+        keyToken.setKey(String.format("%d:%d", userId, jti));
         keyToken.setUserId(userId);
         keyToken.setPublicKey(publicKeyStr);
-        keyToken.setJit(jti.toString());
+        keyToken.setJti(jti);
 
-
-        this.redisService.writeKeyTokenHash(redisKey, keyToken);
+        KeyTokenEntity newKeyToken = this.keyTokenRedisRepository.save(keyToken);
+        if (newKeyToken == null)  {
+            throw new ErrorResponse(ErrorCode.AUTH_ERROR_INTERNAL);
+        }
     }
 
-    public KeyToken getKeyTokenByUserId(Long userId, Long jti) {
-        String redisKey = this.redisUtil.getKeyTokenHashKey(userId, jti);
-
-        KeyToken keyToken = this.redisService.loadKeyTokenHash(redisKey);
-
-        return  keyToken;
-    }
+//    public KeyToken getKeyTokenByUserId(Long userId, UUID jitUUID) {
+//        String redisKey = this.redisUtil.getKeyTokenHashKey(userId, jitUUID);
+//
+//        KeyToken keyToken = this.redisService.loadKeyTokenHash(redisKey);
+//
+//        return  keyToken;
+//    }
 }

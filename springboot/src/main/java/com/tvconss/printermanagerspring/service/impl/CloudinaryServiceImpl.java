@@ -6,6 +6,9 @@ import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.enums.MediaCategory;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
 import com.tvconss.printermanagerspring.service.CloudinaryService;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,11 +38,9 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 
     public Map uploadAvatar(MultipartFile imageFile, Long userId) {
         try {
-            String publicId = String.format("user/avatar/%d", userId);
-
             Map params = ObjectUtils.asMap(
                 "folder", MediaCategory.MEDIA_AVATAR.getMediaCategory(),
-                "public_id", publicId,
+                "public_id", userId.toString(),
                 "overwrite", true
             );
 

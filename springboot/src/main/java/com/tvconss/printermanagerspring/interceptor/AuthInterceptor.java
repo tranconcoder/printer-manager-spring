@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tvconss.printermanagerspring.dto.internal.KeyToken;
 import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
+import com.tvconss.printermanagerspring.entity.KeyTokenEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
+import com.tvconss.printermanagerspring.repository.KeyTokenRedisRepository;
 import com.tvconss.printermanagerspring.service.impl.KeyTokenServiceImpl;
 import com.tvconss.printermanagerspring.util.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.security.PublicKey;
 import java.util.Base64;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -25,10 +28,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private final ObjectMapper objectMapper;
     private final KeyTokenServiceImpl keyTokenService;
+    private final KeyTokenRedisRepository keyTokenRedisRepository;
 
-    public AuthInterceptor(ObjectMapper objectMapper, KeyTokenServiceImpl keyTokenService) {
+    public AuthInterceptor(ObjectMapper objectMapper, KeyTokenServiceImpl keyTokenService, KeyTokenRedisRepository keyTokenRedisRepository) {
         this.objectMapper = objectMapper;
         this.keyTokenService = keyTokenService;
+        this.keyTokenRedisRepository = keyTokenRedisRepository;
     }
 
     @Override
@@ -68,14 +73,16 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
 //        Get key token with userId
-        KeyToken keyToken = this.keyTokenService.getKeyTokenByUserId(userId, jti);
-        if (keyToken == null) {
+//        KeyToken keyToken = this.keyTokenService.getKeyTokenByUserId(userId, jti);
+        String keyTokenKey = String.format("%d:%d", userId, jti);
+        Optional<KeyTokenEntity> keyToken = this.keyTokenRedisRepository.findById(keyTokenKey);
+        if (!keyToken.isPresent()) {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED, "Invalid token");
         }
 
 //        Verify jwt
         try {
-            PublicKey publicKey = JwtUtil.convertBase64ToPublicKey(keyToken.getPublicKey());
+            PublicKey publicKey = JwtUtil.convertBase64ToPublicKey(keyToken.get().getPublicKey());
 
             Claims jwtPayload = Jwts.parserBuilder()
                     .setSigningKey(publicKey)

@@ -3,10 +3,11 @@ package com.tvconss.printermanagerspring.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -16,14 +17,15 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.hash.Jackson2HashMapper;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
 @Configuration
+@EnableRedisRepositories(basePackages = "com.tvconss.printermanagerspring.repository",
+        includeFilters = { @Filter(type = FilterType.REGEX, pattern = ".*SomeRepository") })
 public class RedisConfig {
 
     @Value( "${redis.host}")
@@ -67,7 +69,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory redisConnectionFactory, Jackson2HashMapper hashMapper) {
+    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 
         redisTemplate.setConnectionFactory(redisConnectionFactory);
@@ -82,23 +84,24 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    @Bean
-    public Jackson2HashMapper jackson2HashMapper(ObjectMapper objectMapper) {
-        // 'flatten' parameter:
-        // true: nested objects will be flattened with dot notation (e.g., "address.city": "New York")
-        // false: nested objects will be serialized as a JSON string within a single hash field (e.g., "address": "{...json string...}")
-        return new Jackson2HashMapper(objectMapper, false);
-    }
+//    @Bean
+//    public Jackson2HashMapper jackson2HashMapper(ObjectMapper objectMapper) {
+//        // 'flatten' parameter:
+//        // true: nested objects will be flattened with dot notation (e.g., "address.city": "New York")
+//        // false: nested objects will be serialized as a JSON string within a single hash field (e.g., "address": "{...json string...}")
+//        return new Jackson2HashMapper(objectMapper, false);
+//    }
+//
+//    @Bean
+//    RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+//
+//        RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
+//                .entryTtl(Duration.ofMinutes(5))
+//                .enableTimeToIdle();
+//
+//        return RedisCacheManager.builder(connectionFactory)
+//                .cacheDefaults(defaults)
+//                .build();
+//    }
 
-    @Bean
-    RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-
-        RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(5))
-                .enableTimeToIdle();
-
-        return RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(defaults)
-                .build();
-    }
 }

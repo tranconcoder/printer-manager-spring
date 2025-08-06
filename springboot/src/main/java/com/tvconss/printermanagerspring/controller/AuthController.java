@@ -3,6 +3,7 @@ package com.tvconss.printermanagerspring.controller;
 import com.tvconss.printermanagerspring.dto.request.user.AuthLoginRequest;
 import com.tvconss.printermanagerspring.dto.request.user.AuthRegisterRequest;
 import com.tvconss.printermanagerspring.dto.response.user.AuthResponse;
+import com.tvconss.printermanagerspring.dto.response.user.JwtTokenPair;
 import com.tvconss.printermanagerspring.service.AuthService;
 import com.tvconss.printermanagerspring.service.KeyTokenService;
 import jakarta.validation.Valid;
@@ -35,6 +36,11 @@ public class AuthController {
         AuthResponse authInformation = this.authService.login(loginPayload);
 
         return ResponseEntity.accepted().body(authInformation);
+    }
+
+    @GetMapping("/refresh-token")
+    public ResponseEntity<JwtTokenPair> refreshToken(@RequestParam String refreshToken) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
     @GetMapping("/check-logged-in")

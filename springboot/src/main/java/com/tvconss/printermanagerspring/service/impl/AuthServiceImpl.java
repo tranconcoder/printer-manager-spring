@@ -3,6 +3,7 @@ package com.tvconss.printermanagerspring.service.impl;
 import com.tvconss.printermanagerspring.dto.request.user.AuthLoginRequest;
 import com.tvconss.printermanagerspring.dto.request.user.AuthRegisterRequest;
 import com.tvconss.printermanagerspring.dto.response.user.AuthResponse;
+import com.tvconss.printermanagerspring.dto.response.user.JwtTokenPair;
 import com.tvconss.printermanagerspring.entity.UserEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
@@ -81,5 +82,9 @@ public class AuthServiceImpl implements AuthService {
         }
 
         return authUtil.generateAuthInformation(user);
+    }
+
+    public JwtTokenPair refreshToken(String refreshToken) {
+        return null;
     }
 }
