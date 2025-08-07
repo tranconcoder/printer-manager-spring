@@ -20,31 +20,33 @@ import java.util.Map;
 @Component
 public class AuthUtil {
 
-    private JwtServiceImpl jwtService;
-    private KeyPairGenerator keyPairGenerator;
-    private RedisUtil redisUtil;
-    private KeyTokenRedisRepository keyTokenRedisRepository;
+    private final JwtServiceImpl jwtService;
+    private final KeyPairGenerator keyPairGenerator;
+    private final RedisUtil redisUtil;
+    private final KeyTokenRedisRepository keyTokenRedisRepository;
 
     @Value("${jwt.refresh_token_expire_time}")
     private long refreshTokenExpireTime;
 
-    @Value("${jwt.rsa_key_size}")
-    private int rsaKeySize;
-
-
     public AuthUtil(JwtServiceImpl jwtService,
                     RedisUtil redisUtil,
-                    KeyTokenRedisRepository keyTokenRedisRepository) {
+                    KeyTokenRedisRepository keyTokenRedisRepository,
+                    @Value("${jwt.rsa_key_size}") int rsaKeySize) {
         this.jwtService = jwtService;
         this.redisUtil = redisUtil;
         this.keyTokenRedisRepository = keyTokenRedisRepository;
 
+        System.out.println("RSA Key Size: " + rsaKeySize);
+
+        KeyPairGenerator keyPairGeneratorTemp;
         try {
-            this.keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            this.keyPairGenerator.initialize(this.rsaKeySize);
+            keyPairGeneratorTemp = KeyPairGenerator.getInstance("RSA");
+            keyPairGeneratorTemp .initialize(rsaKeySize);
         } catch(NoSuchAlgorithmException e) {
-            this.keyPairGenerator = null;
+            keyPairGeneratorTemp = null;
         }
+
+        this.keyPairGenerator = keyPairGeneratorTemp;
     }
 
     public AuthResponse generateAuthInformation(UserEntity user, Long newJti) {

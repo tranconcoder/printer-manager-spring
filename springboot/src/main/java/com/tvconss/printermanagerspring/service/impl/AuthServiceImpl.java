@@ -27,7 +27,6 @@ import java.util.Base64;
 public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private KeyPairGenerator keyPairGenerator;
     private ObjectMapper objectMapper;
     private KeyTokenRedisRepository keyTokenRedisRepository;
     private RedisUtil redisUtil;
@@ -49,14 +48,6 @@ public class AuthServiceImpl implements AuthService {
         this.keyTokenRedisRepository = keyTokenRedisRepository;
         this.redisUtil = redisUtil;
         this.jwtService = jwtService;
-
-        try {
-            // Initialize the KeyPairGenerator for RSA
-            this.keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            this.keyPairGenerator.initialize(2048); // Set key size
-        } catch (NoSuchAlgorithmException e) {
-            this.keyPairGenerator = null;
-        }
     }
 
 
