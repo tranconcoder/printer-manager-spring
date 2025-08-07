@@ -83,8 +83,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 //        Verify jwt
         try {
-            PublicKey publicKey = JwtUtil.convertBase64ToPublicKey(keyToken.getPublicKey());            // First parse the token without strict claim validation to get the claims
-
+            PublicKey publicKey = keyToken.getPublicKeyAsObject();
             Claims jwtClaims = this.jwtService.verifyToken(token, publicKey, userId, jti);
 
 //            Set request attribute

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.security.*;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class AuthUtil {
@@ -43,8 +44,7 @@ public class AuthUtil {
         }
     }
 
-    public AuthResponse generateAuthInformation(UserEntity user) {
-
+    public AuthResponse generateAuthInformation(UserEntity user, Long newJti) {
 //        Create access token and refresh token (key token)
 //        Step 1: generate private key and public key to create JWT
         if (this.keyPairGenerator == null) {
@@ -63,7 +63,7 @@ public class AuthUtil {
         jwtPayload.setUserGender(user.isUserGender());
 
 //        Step 2: use private key to create JWT
-        Long jti = this.redisUtil.getNextJti(user.getUserId());
+        Long jti = newJti != null ? newJti : this.redisUtil.getNextJti(user.getUserId());
         Map<String, String> jwtTokenPair = this.jwtService.generateJwtTokenPair(
                 jti,
                 privateKey,

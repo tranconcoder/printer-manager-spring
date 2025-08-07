@@ -1,5 +1,6 @@
 package com.tvconss.printermanagerspring.controller;
 
+import com.tvconss.printermanagerspring.dto.request.RefreshTokenRequest;
 import com.tvconss.printermanagerspring.dto.request.user.AuthLoginRequest;
 import com.tvconss.printermanagerspring.dto.request.user.AuthRegisterRequest;
 import com.tvconss.printermanagerspring.dto.response.user.AuthResponse;
@@ -39,10 +40,8 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<JwtTokenPair> refreshToken(@RequestBody  String refreshToken) {
-        System.out.println("Refresh token: " + refreshToken);
-
-        JwtTokenPair jwtTokenPair = this.authService.refreshToken(refreshToken);
+    public ResponseEntity<JwtTokenPair> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+        JwtTokenPair jwtTokenPair = this.authService.refreshToken(request.getRefreshToken());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(jwtTokenPair);
     }

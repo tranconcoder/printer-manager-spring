@@ -1,6 +1,5 @@
 package com.tvconss.printermanagerspring.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tvconss.printermanagerspring.dto.request.user.AuthLoginRequest;
@@ -16,10 +15,7 @@ import com.tvconss.printermanagerspring.repository.UserRepository;
 import com.tvconss.printermanagerspring.service.AuthService;
 import com.tvconss.printermanagerspring.service.JwtService;
 import com.tvconss.printermanagerspring.util.AuthUtil;
-import com.tvconss.printermanagerspring.util.JwtUtil;
 import com.tvconss.printermanagerspring.util.RedisUtil;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -92,9 +88,8 @@ public class AuthServiceImpl implements AuthService {
             throw new ErrorResponse(ErrorCode.AUTH_ERROR_INTERNAL);
         }
 
-        return this.authUtil.generateAuthInformation(savedUser);
+        return this.authUtil.generateAuthInformation(savedUser, null);
     }
-
 
     public AuthResponse login(AuthLoginRequest data) {
         String email = data.getEmail();
@@ -113,17 +108,12 @@ public class AuthServiceImpl implements AuthService {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED);
         }
 
-        return authUtil.generateAuthInformation(user);
+        return authUtil.generateAuthInformation(user, null);
     }
 
     public JwtTokenPair refreshToken(String refreshToken) {
 
-//            Validate arguments
-        if (refreshToken == null || refreshToken.isEmpty()) {
-            throw new ErrorResponse(ErrorCode.AUTH_MISSING_TOKEN, "Refresh token is required");
-        }
-
-//            Get payload from refresh token
+//        Get payload from refresh token
         String[] segments = refreshToken.split("\\.");
         String payload = segments.length == 3 ? segments[1] : null;
 
@@ -157,10 +147,10 @@ public class AuthServiceImpl implements AuthService {
             throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Invalid refresh token payload");
         }
 
-
 //            Get key token
         String keyTokenKey = this.redisUtil.getKeyTokenKey(userId, jti);
-        KeyTokenEntity keyToken = this.keyTokenRedisRepository.findById(keyTokenKey).orElse(null);
+        KeyTokenEntity keyToken = this.keyTokenRedisRepository.findById(keyTokenKey)
+                .orElse(null);
 
         if (keyToken == null) {
             throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Invalid refresh token");
@@ -168,9 +158,11 @@ public class AuthServiceImpl implements AuthService {
 
         try {
 //             Verify refresh token with public key
-            PublicKey publicKey = JwtUtil.convertBase64ToPublicKey(keyToken.getPublicKey());
+            PublicKey publicKey = keyToken.getPublicKeyAsObject();
 
             this.jwtService.verifyToken(refreshToken, publicKey, userId, jti);
+        } catch (IllegalArgumentException e) {
+            throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Refresh token is invalid");
         } catch (Exception ex) {
             throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, ex.getMessage());
         }
@@ -183,7 +175,7 @@ public class AuthServiceImpl implements AuthService {
         user.setUserLastName(userLastName);
         user.setUserGender(userGender);
 
-        AuthResponse authResponse = this.authUtil.generateAuthInformation(user);
+        AuthResponse authResponse = this.authUtil.generateAuthInformation(user, jti);
 
         return authResponse.getToken();
     }
