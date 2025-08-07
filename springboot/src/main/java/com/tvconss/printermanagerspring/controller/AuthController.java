@@ -1,10 +1,10 @@
 package com.tvconss.printermanagerspring.controller;
 
 import com.tvconss.printermanagerspring.dto.request.RefreshTokenRequest;
-import com.tvconss.printermanagerspring.dto.request.user.AuthLoginRequest;
-import com.tvconss.printermanagerspring.dto.request.user.AuthRegisterRequest;
-import com.tvconss.printermanagerspring.dto.response.user.AuthResponse;
-import com.tvconss.printermanagerspring.dto.response.user.JwtTokenPair;
+import com.tvconss.printermanagerspring.dto.request.auth.AuthLoginRequest;
+import com.tvconss.printermanagerspring.dto.request.auth.AuthRegisterRequest;
+import com.tvconss.printermanagerspring.dto.response.auth.AuthResponse;
+import com.tvconss.printermanagerspring.dto.response.auth.JwtTokenPair;
 import com.tvconss.printermanagerspring.service.AuthService;
 import com.tvconss.printermanagerspring.service.KeyTokenService;
 import jakarta.validation.Valid;

@@ -20,7 +20,12 @@ public enum ErrorCode {
 
 //    Upload
     UPLOAD_ERROR_INTERNAL("UPLOAD_0200", "Upload error internal", HttpStatus.INTERNAL_SERVER_ERROR),
-    UPLOAD_FAILED("UPLOAD_0201", "Upload failed", HttpStatus.BAD_REQUEST),;
+    UPLOAD_FAILED("UPLOAD_0201", "Upload failed", HttpStatus.BAD_REQUEST),
+
+//    User
+    USER_ERROR_INTERNAL("USER_0300", "User error internal", HttpStatus.INTERNAL_SERVER_ERROR),
+    USER_NOT_FOUND("USER_0301", "User not found", HttpStatus.NOT_FOUND);
+
 
 
     public final String errorCode;

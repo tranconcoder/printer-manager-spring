@@ -6,6 +6,7 @@ import com.cloudinary.transformation.Layer;
 import com.cloudinary.utils.ObjectUtils;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.enums.MediaCategory;
+import com.tvconss.printermanagerspring.enums.MediaSize;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
 import com.tvconss.printermanagerspring.service.CloudinaryService;
 
@@ -55,23 +56,45 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 throw new ErrorResponse(ErrorCode.UPLOAD_FAILED, "Upload avatar failed");
             }
 
-            // Generate optimized avatar URL with proper transformations
-            return this.cloudinary.url()
-                    .resourceType("image")
-                    .transformation(new Transformation()
-                            .aspectRatio("1:1")
-                            .width(120)
-                            .crop("fill")
-                            .gravity("face")
-                            .quality("auto:best")
-                            .fetchFormat("auto")
-                    )
-                    .generate(publicId);
+            return this.getAvatarUrl(userId, MediaSize.AVATAR_SMALL);
         } catch(ErrorResponse ex) {
             throw ex;
         } catch (Exception ex) {
             throw new ErrorResponse(ErrorCode.UPLOAD_ERROR_INTERNAL, "Error on processing avatar upload");
         }
-
     }
+
+    @Override
+    public String getImageUrl(String publicId, MediaSize size) {
+        return this.cloudinary.url()
+                .resourceType("image")
+                .transformation(new Transformation()
+                        .width(size.getWidth())
+                        .height(size.getHeight())
+                        .crop("fill")
+                        .gravity("g_auto")
+                        .quality("auto:best")
+                        .fetchFormat("auto")
+                )
+                .generate(publicId);
+    }
+
+
+    @Override
+    public String getAvatarUrl(Long userId, MediaSize size) {
+        String publicId = userId.toString();
+
+        return this.cloudinary.url()
+                .resourceType("image")
+                .transformation(new Transformation()
+                        .aspectRatio("1:1")
+                        .width(size.getWidth())
+                        .crop("fill")
+                        .gravity("face")
+                        .quality("auto:best")
+                        .fetchFormat("auto")
+                )
+                .generate(publicId);
+    }
+
 }

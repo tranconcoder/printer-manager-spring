@@ -1,9 +1,9 @@
 package com.tvconss.printermanagerspring.util;
 
 import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
-import com.tvconss.printermanagerspring.dto.response.user.AuthResponse;
-import com.tvconss.printermanagerspring.dto.response.user.JwtTokenPair;
-import com.tvconss.printermanagerspring.dto.response.user.User;
+import com.tvconss.printermanagerspring.dto.response.auth.AuthResponse;
+import com.tvconss.printermanagerspring.dto.response.auth.JwtTokenPair;
+import com.tvconss.printermanagerspring.dto.response.user.UserResponse;
 import com.tvconss.printermanagerspring.entity.KeyTokenEntity;
 import com.tvconss.printermanagerspring.entity.UserEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
@@ -90,7 +90,7 @@ public class AuthUtil {
         AuthResponse response = new AuthResponse();
 
 //        User information
-        User userResponse = new User();
+        UserResponse userResponse = new UserResponse();
         userResponse.loadFromEntity(user);
 
 //        Jwt token pair information
