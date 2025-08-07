@@ -16,6 +16,7 @@ import com.tvconss.printermanagerspring.service.AuthService;
 import com.tvconss.printermanagerspring.service.JwtService;
 import com.tvconss.printermanagerspring.util.AuthUtil;
 import com.tvconss.printermanagerspring.util.RedisUtil;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse register(AuthRegisterRequest data) {
 //        Check email is not existed
         String email = data.getEmail();
-        UserEntity userExisted = this.userRepository.findByUserEmail(email);
+        UserEntity userExisted = this.userRepository.findByUserEmail(email).orElse(null);
 
         if (userExisted != null) {
             throw new ErrorResponse(ErrorCode.AUTH_USER_ALREADY_EXIST);
@@ -87,7 +88,7 @@ public class AuthServiceImpl implements AuthService {
         String password = data.getPassword();
 
 //        Check user is exist
-        UserEntity user = this.userRepository.findByUserEmail(email);
+        UserEntity user = this.userRepository.findByUserEmail(email).orElse(null);
 
         if (user == null) {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED);

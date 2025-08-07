@@ -50,9 +50,8 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             Map result = this.cloudinary.uploader().upload(imageFile.getBytes(), params);
 
             String url = result.get("secure_url").toString();
-            String publicId  = result.get("public_id").toString();
 
-            if (url == null || publicId == null) {
+            if (url == null) {
                 throw new ErrorResponse(ErrorCode.UPLOAD_FAILED, "Upload avatar failed");
             }
 
@@ -82,7 +81,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 
     @Override
     public String getAvatarUrl(Long userId, MediaSize size) {
-        String publicId = userId.toString();
+        String publicId = this.getPublicIdForAvatar(userId);
 
         return this.cloudinary.url()
                 .resourceType("image")
@@ -97,4 +96,10 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 .generate(publicId);
     }
 
+    public String getPublicIdForAvatar(Long userId) {
+        return String.format("%s/%s",
+            MediaCategory.MEDIA_AVATAR.getMediaCategory(),
+            userId.toString()
+        );
+    }
 }

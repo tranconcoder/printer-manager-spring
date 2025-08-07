@@ -9,7 +9,9 @@ import com.tvconss.printermanagerspring.exception.ErrorResponse;
 import com.tvconss.printermanagerspring.repository.UserRepository;
 import com.tvconss.printermanagerspring.service.CloudinaryService;
 import com.tvconss.printermanagerspring.service.UserService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -23,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getUserById(Long userId) {
-        UserEntity userEntity = this.userRepository.findById(userId).orElse(null);
+        UserEntity userEntity = this.userRepository.findByUserId(userId).orElse(null);
 
         if (userEntity == null) {
             throw new ErrorResponse(ErrorCode.USER_NOT_FOUND);
