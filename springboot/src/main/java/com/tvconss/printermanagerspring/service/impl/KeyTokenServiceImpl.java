@@ -25,18 +25,4 @@ public class KeyTokenServiceImpl implements KeyTokenService {
         this.redisUtil = redisUtil;
         this.keyTokenRedisRepository = keyTokenRedisRepository;
     }
-    
-    public void createKeyToken(PublicKey publicKey, Long userId, Long jti) {
-        String publicKeyStr = Base64.getEncoder().encodeToString(publicKey.getEncoded());
-
-        KeyTokenEntity keyToken = new KeyTokenEntity();
-
-        keyToken.setKey(this.redisUtil.getKeyTokenKey(userId, jti));
-        keyToken.setUserId(userId);
-        keyToken.setPublicKey(publicKeyStr);
-        keyToken.setJti(jti);
-        keyToken.setTtl(this.refreshTokenExpireTime);
-
-        this.keyTokenRedisRepository.save(keyToken);
-    }
 }

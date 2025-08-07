@@ -38,9 +38,13 @@ public class AuthController {
         return ResponseEntity.accepted().body(authInformation);
     }
 
-    @GetMapping("/refresh-token")
-    public ResponseEntity<JwtTokenPair> refreshToken(@RequestParam String refreshToken) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    @PostMapping("/refresh-token")
+    public ResponseEntity<JwtTokenPair> refreshToken(@RequestBody  String refreshToken) {
+        System.out.println("Refresh token: " + refreshToken);
+
+        JwtTokenPair jwtTokenPair = this.authService.refreshToken(refreshToken);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(jwtTokenPair);
     }
 
     @GetMapping("/check-logged-in")

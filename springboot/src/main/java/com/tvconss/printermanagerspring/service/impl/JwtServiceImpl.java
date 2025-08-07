@@ -2,12 +2,14 @@ package com.tvconss.printermanagerspring.service.impl;
 
 import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
 import com.tvconss.printermanagerspring.service.JwtService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.time.Instant;
 import java.util.*;
 
@@ -67,5 +69,20 @@ public class JwtServiceImpl implements JwtService {
         jwtTokenPair.put("refreshToken", generateRefreshToken(jti, privateKey, user));
 
         return jwtTokenPair;
+    }
+
+    @Override
+    public Claims verifyToken(String token, PublicKey publicKey, Long userId, Long jti) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(publicKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        if (!claims.getSubject().equals(userId.toString()) || !claims.getId().equals(jti.toString())) {
+            throw new IllegalArgumentException("Invalid token claims");
+        }
+
+        return claims;
     }
 }

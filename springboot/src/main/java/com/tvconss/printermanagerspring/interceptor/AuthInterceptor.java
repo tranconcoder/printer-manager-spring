@@ -6,8 +6,9 @@ import com.tvconss.printermanagerspring.entity.KeyTokenEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
 import com.tvconss.printermanagerspring.repository.KeyTokenRedisRepository;
-import com.tvconss.printermanagerspring.service.impl.KeyTokenServiceImpl;
+import com.tvconss.printermanagerspring.service.JwtService;
 import com.tvconss.printermanagerspring.util.JwtUtil;
+import com.tvconss.printermanagerspring.util.RedisUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,17 +18,23 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.security.PublicKey;
 import java.util.Base64;
-import java.util.Optional;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final ObjectMapper objectMapper;
     private final KeyTokenRedisRepository keyTokenRedisRepository;
+    private final RedisUtil redisUtil;
+    private final JwtService jwtService;
 
-    public AuthInterceptor(ObjectMapper objectMapper, KeyTokenRedisRepository keyTokenRedisRepository) {
+    public AuthInterceptor(ObjectMapper objectMapper,
+                           KeyTokenRedisRepository keyTokenRedisRepository,
+                           RedisUtil redisUtil,
+                           JwtService jwtService) {
         this.objectMapper = objectMapper;
         this.keyTokenRedisRepository = keyTokenRedisRepository;
+        this.redisUtil = redisUtil;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -59,33 +66,29 @@ public class AuthInterceptor implements HandlerInterceptor {
         String payload = new String(decoder.decode(segments[1]));
 
         JsonNode jsonNode = this.objectMapper.readTree(payload);
-        long userId = jsonNode.get("userId").asLong(-1);
-        long jti = jsonNode.get("jti").asLong(-1);
+        Long userId = jsonNode.get("userId").asLong(-1);
+        Long jti = jsonNode.get("jti").asLong(-1);
 
         if (userId == -1 || jti == -1) {
             throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Invalid token");
         }
 
 //        Get key token with userId
-//        KeyToken keyToken = this.keyTokenService.getKeyTokenByUserId(userId, jti);
-        String keyTokenKey = String.format("%d:%d", userId, jti);
-        Optional<KeyTokenEntity> keyToken = this.keyTokenRedisRepository.findById(keyTokenKey);
-        if (keyToken.isEmpty()) {
+        String keyTokenKey = this.redisUtil.getKeyTokenKey(userId, jti);
+        KeyTokenEntity keyToken = this.keyTokenRedisRepository.findById(keyTokenKey).orElse(null);
+
+        if (keyToken == null) {
             throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Invalid token");
         }
 
 //        Verify jwt
         try {
-            PublicKey publicKey = JwtUtil.convertBase64ToPublicKey(keyToken.get().getPublicKey());
+            PublicKey publicKey = JwtUtil.convertBase64ToPublicKey(keyToken.getPublicKey());            // First parse the token without strict claim validation to get the claims
 
-            Claims jwtPayload = Jwts.parserBuilder()
-                    .setSigningKey(publicKey)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-            
+            Claims jwtClaims = this.jwtService.verifyToken(token, publicKey, userId, jti);
+
 //            Set request attribute
-            request.setAttribute("jwtPayload", jwtPayload);
+            request.setAttribute("jwtClaims", jwtClaims);
         } catch(Exception e) {
             throw new ErrorResponse(ErrorCode.AUTH_FAILED, e.getMessage());
         }

@@ -4,32 +4,36 @@ import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
 import com.tvconss.printermanagerspring.dto.response.user.AuthResponse;
 import com.tvconss.printermanagerspring.dto.response.user.JwtTokenPair;
 import com.tvconss.printermanagerspring.dto.response.user.User;
+import com.tvconss.printermanagerspring.entity.KeyTokenEntity;
 import com.tvconss.printermanagerspring.entity.UserEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
-import com.tvconss.printermanagerspring.service.KeyTokenService;
+import com.tvconss.printermanagerspring.repository.KeyTokenRedisRepository;
 import com.tvconss.printermanagerspring.service.impl.JwtServiceImpl;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.*;
+import java.util.Base64;
 import java.util.Map;
-import java.util.UUID;
 
 @Component
 public class AuthUtil {
 
     private JwtServiceImpl jwtService;
-    private KeyTokenService keyTokenService;
-    private PasswordEncoder passwordEncoder;
     private KeyPairGenerator keyPairGenerator;
     private RedisUtil redisUtil;
+    private KeyTokenRedisRepository keyTokenRedisRepository;
 
-    public AuthUtil(JwtServiceImpl jwtService, KeyTokenService keyTokenService, PasswordEncoder passwordEncoder, RedisUtil redisUtil) {
+    @Value("${jwt.refresh_token_expire_time}")
+    private long refreshTokenExpireTime;
+
+    public AuthUtil(JwtServiceImpl jwtService,
+                    RedisUtil redisUtil,
+                    KeyTokenRedisRepository keyTokenRedisRepository) {
         this.jwtService = jwtService;
-        this.keyTokenService = keyTokenService;
-        this.passwordEncoder = passwordEncoder;
         this.redisUtil = redisUtil;
+        this.keyTokenRedisRepository = keyTokenRedisRepository;
 
         try {
             this.keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -67,8 +71,15 @@ public class AuthUtil {
 
 
 //        Create key token
-        this.keyTokenService.createKeyToken(publicKey, user.getUserId(), jti);
+        KeyTokenEntity keyToken = new KeyTokenEntity();
 
+        keyToken.setKey(this.redisUtil.getKeyTokenKey(user.getUserId(), jti));
+        keyToken.setUserId(user.getUserId());
+        keyToken.setPublicKey(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
+        keyToken.setJti(jti);
+        keyToken.setTtl(refreshTokenExpireTime);
+
+        this.keyTokenRedisRepository.createOrUpdateKeyToken(keyToken);
 
 //        Response token and information to user registration
         AuthResponse response = new AuthResponse();
