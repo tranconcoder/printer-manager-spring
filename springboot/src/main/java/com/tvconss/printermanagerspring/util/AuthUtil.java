@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.security.*;
 import java.util.Base64;
 import java.util.Map;
-import java.util.Optional;
 
 @Component
 public class AuthUtil {
@@ -29,6 +28,10 @@ public class AuthUtil {
     @Value("${jwt.refresh_token_expire_time}")
     private long refreshTokenExpireTime;
 
+    @Value("${jwt.rsa_key_size}")
+    private int rsaKeySize;
+
+
     public AuthUtil(JwtServiceImpl jwtService,
                     RedisUtil redisUtil,
                     KeyTokenRedisRepository keyTokenRedisRepository) {
@@ -38,7 +41,7 @@ public class AuthUtil {
 
         try {
             this.keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            this.keyPairGenerator.initialize(2048);
+            this.keyPairGenerator.initialize(this.rsaKeySize);
         } catch(NoSuchAlgorithmException e) {
             this.keyPairGenerator = null;
         }

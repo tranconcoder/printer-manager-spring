@@ -35,6 +35,7 @@ redis:
   port: 6379
 
 jwt:
+  rsa_key_size: 2048
   access_token_expire_time: 300
   refresh_token_expire_time: 86400
 
