@@ -28,14 +28,13 @@ public class UploadController {
     }
 
     @PostMapping("/avatar")
-    public ResponseEntity<Map>  uploadAvatar(HttpServletRequest request, @RequestBody MultipartFile imageFile) {
-        Claims jwtPayload = (Claims) request.getAttribute("jwtPayload");
-        Long userId = jwtPayload.get("userId", Long.class);
-
-        Map response = this.cloudinaryService.uploadAvatar(imageFile, userId);
+    public ResponseEntity<String>  uploadAvatar(HttpServletRequest request, @RequestBody MultipartFile imageFile) {
+        Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
+        Long userId = jwtClaims.get("userId", Long.class);
+        String url = this.cloudinaryService.uploadAvatar(imageFile, userId);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(response);
+                .body(url);
     }
 }

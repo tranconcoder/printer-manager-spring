@@ -8,8 +8,8 @@ import java.util.Map;
 
 public interface CloudinaryService {
 
-    public Map uploadImage(MultipartFile imageFile, MediaCategory mediaCategory);
+    public Map<?, ?> uploadImage(MultipartFile imageFile, MediaCategory mediaCategory);
 
-    public Map uploadAvatar(MultipartFile imageFile, Long userId);
+    public String uploadAvatar(MultipartFile imageFile, Long userId);
 
 }

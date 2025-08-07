@@ -16,7 +16,12 @@ public enum ErrorCode {
     AUTH_USER_ALREADY_EXIST("AUTH_0101", "Tài khoản đã có người sử dụng", HttpStatus.FORBIDDEN),
     AUTH_FAILED("AUTH_0102", "Xác thực thất bại", HttpStatus.UNAUTHORIZED),
     AUTH_MISSING_TOKEN("AUTH_0103", "Thiếu token xác thực", HttpStatus.UNAUTHORIZED),
-    AUTH_INVALID_TOKEN("AUTH_0104", "Token xác thực không hợp lệ", HttpStatus.UNAUTHORIZED);
+    AUTH_INVALID_TOKEN("AUTH_0104", "Token xác thực không hợp lệ", HttpStatus.UNAUTHORIZED),
+
+//    Upload
+    UPLOAD_ERROR_INTERNAL("UPLOAD_0200", "Upload error internal", HttpStatus.INTERNAL_SERVER_ERROR),
+    UPLOAD_FAILED("UPLOAD_0201", "Upload failed", HttpStatus.BAD_REQUEST),;
+
 
     public final String errorCode;
     public final String errorMessage;
