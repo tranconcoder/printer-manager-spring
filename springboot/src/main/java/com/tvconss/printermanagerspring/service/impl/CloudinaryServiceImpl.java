@@ -1,6 +1,8 @@
 package com.tvconss.printermanagerspring.service.impl;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
+import com.cloudinary.transformation.Layer;
 import com.cloudinary.utils.ObjectUtils;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.enums.MediaCategory;
@@ -35,6 +37,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public String uploadAvatar(MultipartFile imageFile, Long userId) {
         try {
             Map<String, Object> params = new HashMap<>();
@@ -46,11 +49,24 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             Map result = this.cloudinary.uploader().upload(imageFile.getBytes(), params);
 
             String url = result.get("secure_url").toString();
-            if (url == null) {
+            String publicId  = result.get("public_id").toString();
+
+            if (url == null || publicId == null) {
                 throw new ErrorResponse(ErrorCode.UPLOAD_FAILED, "Upload avatar failed");
             }
 
-            return url;
+            // Generate optimized avatar URL with proper transformations
+            return this.cloudinary.url()
+                    .resourceType("image")
+                    .transformation(new Transformation()
+                            .aspectRatio("1:1")
+                            .width(120)
+                            .crop("fill")
+                            .gravity("face")
+                            .quality("auto:best")
+                            .fetchFormat("auto")
+                    )
+                    .generate(publicId);
         } catch(ErrorResponse ex) {
             throw ex;
         } catch (Exception ex) {
