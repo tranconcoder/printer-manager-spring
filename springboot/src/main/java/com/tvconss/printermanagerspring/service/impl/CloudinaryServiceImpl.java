@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.TreeMap;
 
 @Service
 public class CloudinaryServiceImpl implements CloudinaryService {
@@ -96,11 +97,13 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 
 
     @Override
-    public Map<Integer, String> getAvatarUrls(Long userId) {
+    public Map<String, String> getAvatarUrls(Long userId) {
         String publicId = this.getPublicIdForAvatar(userId);
-        Map<Integer, String> urls = new HashMap<>();
+        Map<String, String> urls = new TreeMap<>();
 
         for (MediaSize size : MediaSize.values()) {
+            String key = String.format("%dx%d", size.getWidth(), size.getHeight());
+
             String url = this.cloudinary.url()
                 .resourceType("image")
                 .transformation(new Transformation()
@@ -113,8 +116,10 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 )
                 .generate(publicId);
 
-            urls.put(size.getWidth(), url);
+            urls.put(key, url);
         }
+
+        urls.remove("@class");
 
         return urls;
     }

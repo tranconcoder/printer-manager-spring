@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<Integer, String> getUserAvatarUrl(Long userId) {
+    public Map<String, String> getUserAvatarUrl(Long userId) {
         return this.cloudinaryService.getAvatarUrls(userId);
     }
 }

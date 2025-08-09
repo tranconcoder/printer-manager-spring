@@ -27,7 +27,7 @@ public abstract class UserMapper {
     @Mapping(source = "userFirstName", target = "firstName")
     @Mapping(source = "userLastName", target = "lastName")
     @Mapping(source = "userGender", target = "gender", qualifiedByName = "genderBooleanToString")
-    @Mapping(target = "avatarUrls", expression = "java(cloudinaryService.getAvatarUrls(userEntity.getUserId()))" )
+    @Mapping(target = "avatars", expression = "java(cloudinaryService.getAvatarUrls(userEntity.getUserId()))" )
     public abstract void updateUserResponseFromEntity(UserEntity userEntity, @MappingTarget UserResponse userResponse);
 
     @Named("genderBooleanToString")

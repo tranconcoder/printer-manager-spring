@@ -12,6 +12,6 @@ public interface UserService {
 
     public UserResponse updateUser(Long userId, UpdateUser updateUserFields);
 
-    public Map<Integer, String> getUserAvatarUrl(Long userId);
+    public Map<String, String> getUserAvatarUrl(Long userId);
 
 }
