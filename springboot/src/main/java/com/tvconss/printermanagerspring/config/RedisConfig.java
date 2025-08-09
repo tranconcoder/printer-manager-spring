@@ -5,12 +5,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tvconss.printermanagerspring.entity.KeyTokenEntity;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
@@ -20,14 +22,17 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.hash.Jackson2HashMapper;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
+import java.util.Collections;
 
 @Configuration
 @EnableRedisRepositories(basePackages = "com.tvconss.printermanagerspring.repository",
         includeFilters = { @Filter(type = FilterType.REGEX, pattern = ".*SomeRepository") })
+@EnableCaching
 public class RedisConfig {
 
     @Value( "${redis.host}")
@@ -91,24 +96,25 @@ public class RedisConfig {
     }
 
 
-//    @Bean
-//    public Jackson2HashMapper jackson2HashMapper(ObjectMapper objectMapper) {
-//        // 'flatten' parameter:
-//        // true: nested objects will be flattened with dot notation (e.g., "address.city": "New York")
-//        // false: nested objects will be serialized as a JSON string within a single hash field (e.g., "address": "{...json string...}")
-//        return new Jackson2HashMapper(objectMapper, false);
-//    }
-//
-//    @Bean
-//    RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-//
-//        RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
-//                .entryTtl(Duration.ofMinutes(5))
-//                .enableTimeToIdle();
-//
-//        return RedisCacheManager.builder(connectionFactory)
-//                .cacheDefaults(defaults)
-//                .build();
-//    }
+    @Bean
+    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        RedisSerializationContext.SerializationPair<Object> serializationPair =
+                RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer());
 
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl( Duration.ofMinutes( 10 ) )
+                .disableCachingNullValues()
+                .serializeValuesWith( serializationPair );
+
+        return RedisCacheManager
+                .builder(RedisCacheWriter.lockingRedisCacheWriter(connectionFactory))
+                .cacheDefaults( config )
+                .enableStatistics()
+                .transactionAware()
+                .withInitialCacheConfigurations(
+                        Collections.singletonMap( "predefined",
+                                RedisCacheConfiguration.defaultCacheConfig()
+                                        .disableCachingNullValues()))
+                .build();
+    }
 }

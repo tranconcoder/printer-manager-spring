@@ -36,10 +36,7 @@ public class AuthServiceTest {
 
     @Test
     public void testLoginAPI() {
-        AuthLoginRequest loginPayload = new AuthLoginRequest();
-
-        loginPayload.setEmail("tranvanconkg@gmail.com");
-        loginPayload.setPassword("Anhnam9ce*");
+        AuthLoginRequest loginPayload = new AuthLoginRequest("tranvanconkg@gmail.com", "Anhnam9ce*");
 
         ResponseEntity<AuthResponse> response = restTemplate.postForEntity("/auth/login",
                 loginPayload,

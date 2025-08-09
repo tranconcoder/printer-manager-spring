@@ -1,14 +1,15 @@
 package com.tvconss.printermanagerspring.controller;
 
+import com.tvconss.printermanagerspring.dto.request.user.UpdateUser;
 import com.tvconss.printermanagerspring.dto.response.user.UserResponse;
 import com.tvconss.printermanagerspring.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Null;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -20,8 +21,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<UserResponse> getUser(HttpServletRequest request) {
+    @GetMapping("/profile")
+    public ResponseEntity<UserResponse> getProfile(HttpServletRequest request) {
         Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
         Long userId = jwtClaims.get("userId", Long.class);
 
@@ -30,4 +31,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(this.userService.getUserById(userId));
     }
+
+    @PatchMapping("/profile")
+    public ResponseEntity<Null> updateProfile(HttpServletRequest request, @Valid  @RequestBody UpdateUser updateUserFields) {
+        Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
+        Long userId = jwtClaims.get("userId", Long.class);
+
+        this.userService.updateUser(userId, updateUserFields);
+
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
 }

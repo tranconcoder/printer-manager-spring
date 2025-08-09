@@ -7,7 +7,7 @@ public interface UserService {
 
     public UserResponse getUserById(Long userId);
 
-    public void updateUser(UpdateUser updateUserFields);
+    public UserResponse updateUser(Long userId, UpdateUser updateUserFields);
 
     public String getUserAvatarUrl(Long userId);
 

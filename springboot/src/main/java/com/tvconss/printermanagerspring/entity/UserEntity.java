@@ -1,7 +1,7 @@
 package com.tvconss.printermanagerspring.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -12,6 +12,8 @@ import java.util.Date;
 @Data
 @DynamicUpdate
 @DynamicInsert
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
     @Id
     @Column(name = "user_id")

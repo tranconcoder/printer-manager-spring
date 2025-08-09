@@ -142,11 +142,9 @@ public class AuthServiceImpl implements AuthService {
 //            Get key token
         String keyTokenKey = this.redisUtil.getKeyTokenKey(userId, jti);
         KeyTokenEntity keyToken = this.keyTokenRedisRepository.findById(keyTokenKey)
-                .orElse(null);
-
-        if (keyToken == null) {
-            throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Invalid refresh token");
-        }
+                .orElseThrow(() ->
+                        new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN, "Invalid refresh token")
+                );
 
         try {
 //             Verify refresh token with public key
@@ -160,12 +158,12 @@ public class AuthServiceImpl implements AuthService {
         }
 
 //            Create new token pair
-        UserEntity user = new UserEntity();
-        user.setUserId(userId);
-        user.setUserEmail(userEmail);
-        user.setUserFirstName(userFirstName);
-        user.setUserLastName(userLastName);
-        user.setUserGender(userGender);
+        UserEntity user = new UserEntity(userId,
+                userEmail,
+                null,
+                userFirstName,
+                userLastName,
+                userGender);
 
         AuthResponse authResponse = this.authUtil.generateAuthInformation(user, jti);
 

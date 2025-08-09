@@ -1,6 +1,8 @@
 package com.tvconss.printermanagerspring.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
@@ -15,6 +17,8 @@ import java.util.Base64;
 
 @RedisHash("user:key_token")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class KeyTokenEntity {
 
     @Id

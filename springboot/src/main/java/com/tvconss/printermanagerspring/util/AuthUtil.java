@@ -76,31 +76,27 @@ public class AuthUtil {
 
 
 //        Create key token
-        KeyTokenEntity keyToken = new KeyTokenEntity();
-
-        keyToken.setKey(this.redisUtil.getKeyTokenKey(user.getUserId(), jti));
-        keyToken.setUserId(user.getUserId());
-        keyToken.setPublicKey(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
-        keyToken.setJti(jti);
-        keyToken.setTtl(refreshTokenExpireTime);
+        KeyTokenEntity keyToken = new KeyTokenEntity(
+                this.redisUtil.getKeyTokenKey(user.getUserId(), jti),
+                user.getUserId(),
+                jti,
+                Base64.getEncoder().encodeToString(publicKey.getEncoded()),
+                refreshTokenExpireTime
+        );
 
         this.keyTokenRedisRepository.createOrUpdateKeyToken(keyToken);
-
-//        Response token and information to user registration
-        AuthResponse response = new AuthResponse();
 
 //        User information
         UserResponse userResponse = new UserResponse();
         userResponse.loadFromEntity(user);
 
 //        Jwt token pair information
-        JwtTokenPair jwtTokenPairResponse = new JwtTokenPair();
-        jwtTokenPairResponse.setAccessToken(jwtTokenPair.get("accessToken"));
-        jwtTokenPairResponse.setRefreshToken(jwtTokenPair.get("refreshToken"));
+        JwtTokenPair jwtTokenPairResponse = new JwtTokenPair(
+                jwtTokenPair.get("accessToken"),
+                jwtTokenPair.get("refreshToken")
+        );
 
-        response.setUser(userResponse);
-        response.setToken(jwtTokenPairResponse);
-
-        return response;
+//        Response token and information to user registration
+        return new AuthResponse(userResponse, jwtTokenPairResponse);
     }
 }
