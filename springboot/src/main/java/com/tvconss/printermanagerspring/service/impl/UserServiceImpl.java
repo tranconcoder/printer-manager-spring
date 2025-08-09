@@ -14,6 +14,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -22,7 +24,8 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     public UserServiceImpl(UserRepository userRepository,
-                           CloudinaryService cloudinaryService, UserMapper userMapper) {
+                           CloudinaryService cloudinaryService,
+                           UserMapper userMapper) {
         this.userRepository = userRepository;
         this.cloudinaryService = cloudinaryService;
         this.userMapper = userMapper;
@@ -31,15 +34,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cacheable(value = "users", key = "#userId")
     public UserResponse getUserById(Long userId) {
-        UserEntity userEntity = this.userRepository.findByUserId(userId).orElse(null);
-
-        if (userEntity == null) {
-            throw new ErrorResponse(ErrorCode.USER_NOT_FOUND);
-        }
+        UserEntity userEntity = this.userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ErrorResponse(ErrorCode.USER_NOT_FOUND));
 
         UserResponse userResponse = new UserResponse();
-        userResponse.loadFromEntity(userEntity);
-        userResponse.setAvatarUrl(this.cloudinaryService.getAvatarUrl(userId, MediaSize.AVATAR_SMALL));
+        userMapper.updateUserResponseFromEntity(userEntity, userResponse);
 
         return userResponse;
     }
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getUserAvatarUrl(Long userId) {
-        return this.cloudinaryService.getAvatarUrl(userId, MediaSize.AVATAR_SMALL);
+    public Map<Integer, String> getUserAvatarUrl(Long userId) {
+        return this.cloudinaryService.getAvatarUrls(userId);
     }
 }

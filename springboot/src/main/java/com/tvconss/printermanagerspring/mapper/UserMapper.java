@@ -3,27 +3,44 @@ package com.tvconss.printermanagerspring.mapper;
 import com.tvconss.printermanagerspring.dto.request.user.UpdateUser;
 import com.tvconss.printermanagerspring.dto.response.user.UserResponse;
 import com.tvconss.printermanagerspring.entity.UserEntity;
+import com.tvconss.printermanagerspring.enums.ErrorCode;
+import com.tvconss.printermanagerspring.enums.MediaSize;
+import com.tvconss.printermanagerspring.exception.ErrorResponse;
 import com.tvconss.printermanagerspring.service.CloudinaryService;
 import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface UserMapper {
+public abstract class UserMapper {
 
-    @Mapping(target = "userFirstName", source = "firstName")
-    @Mapping(target = "userLastName", source = "lastName")
-    @Mapping(target = "userGender", source = "gender", qualifiedByName = "genderBooleanToString")
-    @Mapping(target = "userEmail", source = "email")
-    void updateUserFromDTO(UpdateUser updateUserFields, @MappingTarget UserEntity userEntity);
+    @Autowired
+    public CloudinaryService cloudinaryService;
 
-    @Mapping(target = "userId", source = "userId")
-    @Mapping(target = "email", source = "userEmail")
-    @Mapping(target = "firstName", source = "userFirstName")
-    @Mapping(target = "lastName", source = "userLastName")
-    @Mapping(target = "firstName", source = "userGender")
-    void updateUserResponseFromEntity(UserEntity userEntity, @MappingTarget UserResponse userResponse);
+    @Mapping(source = "firstName", target = "userFirstName")
+    @Mapping(source = "lastName", target = "userLastName")
+    @Mapping(source = "gender", target = "userGender", qualifiedByName = "genderStringToBoolean")
+    public abstract void updateUserFromDTO(UpdateUser updateUserFields, @MappingTarget UserEntity userEntity);
 
-    @Named( "genderBooleanToString" )
-    default String genderBooleanToString(Boolean gender) {
+    @Mapping(source = "userId", target = "userId")
+    @Mapping(source = "userEmail", target = "email")
+    @Mapping(source = "userFirstName", target = "firstName")
+    @Mapping(source = "userLastName", target = "lastName")
+    @Mapping(source = "userGender", target = "gender", qualifiedByName = "genderBooleanToString")
+    @Mapping(target = "avatarUrls", expression = "java(cloudinaryService.getAvatarUrls(userEntity.getUserId()))" )
+    public abstract void updateUserResponseFromEntity(UserEntity userEntity, @MappingTarget UserResponse userResponse);
+
+    @Named("genderBooleanToString")
+    public String genderBooleanToString(boolean gender) {
         return gender ? "male" : "female";
+    }
+
+    @Named("genderStringToBoolean")
+    public boolean genderStringToBoolean(String gender) {
+        if (gender == null) {
+            throw new ErrorResponse(ErrorCode.USER_UPDATE_INVALID_PAYLOAD);
+        }
+
+        return "male".equalsIgnoreCase(gender);
     }
 }

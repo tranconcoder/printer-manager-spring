@@ -33,13 +33,13 @@ public class UserController {
     }
 
     @PatchMapping("/profile")
-    public ResponseEntity<Null> updateProfile(HttpServletRequest request, @Valid  @RequestBody UpdateUser updateUserFields) {
+    public ResponseEntity<UserResponse> updateProfile(HttpServletRequest request, @Valid  @RequestBody UpdateUser updateUserFields) {
         Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
         Long userId = jwtClaims.get("userId", Long.class);
 
-        this.userService.updateUser(userId, updateUserFields);
+        UserResponse updatedUser = this.userService.updateUser(userId, updateUserFields);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 
 }

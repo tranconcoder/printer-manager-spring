@@ -7,8 +7,11 @@ import com.tvconss.printermanagerspring.dto.response.user.UserResponse;
 import com.tvconss.printermanagerspring.entity.KeyTokenEntity;
 import com.tvconss.printermanagerspring.entity.UserEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
+import com.tvconss.printermanagerspring.enums.MediaSize;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
+import com.tvconss.printermanagerspring.mapper.UserMapper;
 import com.tvconss.printermanagerspring.repository.KeyTokenRedisRepository;
+import com.tvconss.printermanagerspring.service.CloudinaryService;
 import com.tvconss.printermanagerspring.service.impl.JwtServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,6 +27,8 @@ public class AuthUtil {
     private final KeyPairGenerator keyPairGenerator;
     private final RedisUtil redisUtil;
     private final KeyTokenRedisRepository keyTokenRedisRepository;
+    private final UserMapper userMapper;
+    private final CloudinaryService cloudinaryService;
 
     @Value("${jwt.refresh_token_expire_time}")
     private long refreshTokenExpireTime;
@@ -31,10 +36,14 @@ public class AuthUtil {
     public AuthUtil(JwtServiceImpl jwtService,
                     RedisUtil redisUtil,
                     KeyTokenRedisRepository keyTokenRedisRepository,
+                    UserMapper userMapper,
+                    CloudinaryService cloudinaryService,
                     @Value("${jwt.rsa_key_size}") int rsaKeySize) {
         this.jwtService = jwtService;
         this.redisUtil = redisUtil;
         this.keyTokenRedisRepository = keyTokenRedisRepository;
+        this.userMapper = userMapper;
+        this.cloudinaryService = cloudinaryService;
 
         System.out.println("RSA Key Size: " + rsaKeySize);
 
@@ -88,7 +97,8 @@ public class AuthUtil {
 
 //        User information
         UserResponse userResponse = new UserResponse();
-        userResponse.loadFromEntity(user);
+        userMapper.updateUserResponseFromEntity(user, userResponse);
+//        userResponse.setAvatarUrl(this.cloudinaryService.getAvatarUrl(user.getUserId(), MediaSize.AVATAR_SMALL));
 
 //        Jwt token pair information
         JwtTokenPair jwtTokenPairResponse = new JwtTokenPair(

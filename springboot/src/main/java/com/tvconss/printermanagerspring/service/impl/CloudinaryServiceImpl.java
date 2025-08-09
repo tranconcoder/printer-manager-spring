@@ -2,7 +2,6 @@ package com.tvconss.printermanagerspring.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
-import com.cloudinary.transformation.Layer;
 import com.cloudinary.utils.ObjectUtils;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.enums.MediaCategory;
@@ -38,7 +37,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         }
     }
 
-    @SuppressWarnings("unchecked")
+   @SuppressWarnings("unchecked")
     public String uploadAvatar(MultipartFile imageFile, Long userId) {
         try {
             Map<String, Object> params = new HashMap<>();
@@ -78,7 +77,6 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 .generate(publicId);
     }
 
-
     @Override
     public String getAvatarUrl(Long userId, MediaSize size) {
         String publicId = this.getPublicIdForAvatar(userId);
@@ -89,11 +87,36 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                         .aspectRatio("1:1")
                         .width(size.getWidth())
                         .crop("fill")
-                        .gravity("face")
+                        .gravity("g_auto")
                         .quality("auto:best")
                         .fetchFormat("auto")
                 )
                 .generate(publicId);
+    }
+
+
+    @Override
+    public Map<Integer, String> getAvatarUrls(Long userId) {
+        String publicId = this.getPublicIdForAvatar(userId);
+        Map<Integer, String> urls = new HashMap<>();
+
+        for (MediaSize size : MediaSize.values()) {
+            String url = this.cloudinary.url()
+                .resourceType("image")
+                .transformation(new Transformation()
+                    .aspectRatio("1:1")
+                    .width(size.getWidth())
+                    .crop("fill")
+                    .gravity("face")
+                    .quality("auto:best")
+                    .fetchFormat("auto")
+                )
+                .generate(publicId);
+
+            urls.put(size.getWidth(), url);
+        }
+
+        return urls;
     }
 
     public String getPublicIdForAvatar(Long userId) {

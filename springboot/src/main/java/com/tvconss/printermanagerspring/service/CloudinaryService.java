@@ -17,5 +17,6 @@ public interface CloudinaryService {
 
     public String getAvatarUrl(Long userId, MediaSize size);
 
+    public Map<Integer, String> getAvatarUrls(Long userId);
 
 }

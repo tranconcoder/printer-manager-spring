@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Data
+import java.util.Map;
+
 @Component
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
@@ -19,28 +21,5 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private String gender;
-    private String avatarUrl;
-
-    @Autowired
-    public CloudinaryService cloudinaryService;
-
-    public void loadFromEntity(UserEntity userEntity) {
-        String userGenderStr = userEntity.isUserGender() ? "male" : "female";
-
-        this.setUserId(userEntity.getUserId());
-        this.setEmail(userEntity.getUserEmail());
-        this.setFirstName(userEntity.getUserFirstName());
-        this.setLastName(userEntity.getUserLastName());
-        this.setGender(userGenderStr);
-    }
-
-    public String getAvatarUrl() {
-        Long userId = this.getUserId();
-
-        if (userId == null) {
-            return null;
-        }
-
-        return cloudinaryService.getAvatarUrl(userId, MediaSize.AVATAR_SMALL);
-    }
+    private Map<Integer, String> avatarUrls;
 }

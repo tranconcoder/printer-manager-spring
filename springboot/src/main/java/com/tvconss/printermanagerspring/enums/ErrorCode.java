@@ -24,8 +24,8 @@ public enum ErrorCode {
 
 //    User
     USER_ERROR_INTERNAL("USER_0300", "User error internal", HttpStatus.INTERNAL_SERVER_ERROR),
-    USER_NOT_FOUND("USER_0301", "User not found", HttpStatus.NOT_FOUND);
-
+    USER_NOT_FOUND("USER_0301", "User not found", HttpStatus.NOT_FOUND),
+    USER_UPDATE_INVALID_PAYLOAD("USER_0302", "Invalid payload for user update", HttpStatus.BAD_REQUEST);
 
 
     public final String errorCode;
