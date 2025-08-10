@@ -25,12 +25,15 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public String uploadDocumentFile(MultipartFile file, Long userId) {
-        String fileName = Optional.ofNullable(file.getName())
+        String fileName = Optional.ofNullable(file.getOriginalFilename())
                 .orElseThrow(() -> new ErrorResponse(ErrorCode.MEDIA_UNSUPPORTED_TYPE))
                 .toLowerCase();
 
         String contentType = Optional.ofNullable(file.getContentType())
                 .orElseThrow(() -> new ErrorResponse(ErrorCode.MEDIA_UNSUPPORTED_TYPE));
+
+        System.out.println("File Name: " + fileName);
+        System.out.println("Content Type: " + contentType);
 
         String fileExtension = StringUtils.getFilenameExtension(fileName);
 
