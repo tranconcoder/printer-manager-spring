@@ -1,10 +1,10 @@
 package com.tvconss.printermanagerspring.mapper;
 
-import com.tvconss.printermanagerspring.dto.request.user.UpdateUser;
+import com.tvconss.printermanagerspring.dto.request.user.UpdateUserPatch;
+import com.tvconss.printermanagerspring.dto.request.user.UpdateUserPut;
 import com.tvconss.printermanagerspring.dto.response.user.UserResponse;
 import com.tvconss.printermanagerspring.entity.UserEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
-import com.tvconss.printermanagerspring.enums.MediaSize;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
 import com.tvconss.printermanagerspring.service.CloudinaryService;
 import org.mapstruct.*;
@@ -20,7 +20,13 @@ public abstract class UserMapper {
     @Mapping(source = "firstName", target = "userFirstName")
     @Mapping(source = "lastName", target = "userLastName")
     @Mapping(source = "gender", target = "userGender", qualifiedByName = "genderStringToBoolean")
-    public abstract void updateUserFromDTO(UpdateUser updateUserFields, @MappingTarget UserEntity userEntity);
+    public abstract void updateUserPatch(UpdateUserPatch updateUserFields, @MappingTarget UserEntity userEntity);
+
+    @Mapping(source = "firstName", target = "userFirstName")
+    @Mapping(source = "lastName", target = "userLastName")
+    @Mapping(source = "gender", target = "userGender", qualifiedByName = "genderStringToBoolean")
+    public abstract void updateUserPut(UpdateUserPut updateUserFields, @MappingTarget UserEntity userEntity);
+
 
     @Mapping(source = "userId", target = "userId")
     @Mapping(source = "userEmail", target = "email")

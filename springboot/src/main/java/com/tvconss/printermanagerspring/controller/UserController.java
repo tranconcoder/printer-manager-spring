@@ -1,12 +1,12 @@
 package com.tvconss.printermanagerspring.controller;
 
-import com.tvconss.printermanagerspring.dto.request.user.UpdateUser;
+import com.tvconss.printermanagerspring.dto.request.user.UpdateUserPatch;
+import com.tvconss.printermanagerspring.dto.request.user.UpdateUserPut;
 import com.tvconss.printermanagerspring.dto.response.user.UserResponse;
 import com.tvconss.printermanagerspring.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Null;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,18 +28,30 @@ public class UserController {
 
         System.out.println("Fetching user with ID: " + userId);
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(this.userService.getUserById(userId));
     }
 
     @PatchMapping("/profile")
-    public ResponseEntity<UserResponse> updateProfile(HttpServletRequest request, @Valid  @RequestBody UpdateUser updateUserFields) {
+    public ResponseEntity<UserResponse> updateProfile(HttpServletRequest request, @Valid  @RequestBody UpdateUserPatch updateUserFields) {
         Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
         Long userId = jwtClaims.get("userId", Long.class);
 
         UserResponse updatedUser = this.userService.updateUser(userId, updateUserFields);
 
-        return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedUser);
     }
 
+    @PutMapping("/profile")
+    public ResponseEntity<UserResponse> updateProfilePut(HttpServletRequest request, @Valid  @RequestBody UpdateUserPut newUser) {
+        Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
+        Long userId = jwtClaims.get("userId", Long.class);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.userService.updateUserPut(userId, newUser));
+    }
 }
