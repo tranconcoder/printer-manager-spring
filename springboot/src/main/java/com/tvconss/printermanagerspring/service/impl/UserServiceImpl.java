@@ -54,7 +54,11 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUserPatch(updateUserFields, userEntity);
 
 //        Save updated user entity
-        this.userRepository.save(userEntity);
+        try {
+            this.userRepository.save(userEntity);
+        } catch (Exception e) {
+            throw new ErrorResponse(ErrorCode.USER_ERROR_INTERNAL, "Error when updating user");
+        }
 
 //        Return updated user response
         UserResponse userResponse = new UserResponse();
@@ -74,7 +78,11 @@ public class UserServiceImpl implements UserService {
         this.userMapper.updateUserPut(newUser, user);
 
 //        Save updated user entity
-        this.userRepository.save(user);
+        try {
+            this.userRepository.save(user);
+        } catch(Exception e) {
+            throw new ErrorResponse(ErrorCode.USER_ERROR_INTERNAL, "Error when updating user");
+        }
 
 //        Return updated user response
         UserResponse userResponse = new UserResponse();

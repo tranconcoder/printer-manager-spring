@@ -25,7 +25,12 @@ public enum ErrorCode {
 //    User
     USER_ERROR_INTERNAL("USER_0300", "User error internal", HttpStatus.INTERNAL_SERVER_ERROR),
     USER_NOT_FOUND("USER_0301", "User not found", HttpStatus.NOT_FOUND),
-    USER_UPDATE_INVALID_PAYLOAD("USER_0302", "Invalid payload for user update", HttpStatus.BAD_REQUEST);
+    USER_UPDATE_INVALID_PAYLOAD("USER_0302", "Invalid payload for user update", HttpStatus.BAD_REQUEST),
+
+//    Media service
+    MEDIA_ERROR_INTERNAL("MEDIA_0400", "Media service error internal", HttpStatus.INTERNAL_SERVER_ERROR),
+    MEDIA_UNSUPPORTED_TYPE("MEDIA_0401", "Unsupported media type", HttpStatus.BAD_REQUEST);
+
 
 
     public final String errorCode;

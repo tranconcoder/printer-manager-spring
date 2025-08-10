@@ -38,6 +38,13 @@ redis:
   host: 'localhost'
   port: 6379
 
+cloudflare:
+  r2:
+    endpoint: "https://1f17202d2f83ca70f9b726b87eea2608.r2.cloudflarestorage.com"
+    access-key: "bcd2ce9da8953680450bd6490f782117"
+    secret-key: "ce3152122387b96162b4e41ceca68246d864ee92e614442ed2e1c3ce5186f506"
+    bucket-name: "pdf-storage"
+
 jwt:
   rsa_key_size: 2048
   access_token_expire_time: 300
