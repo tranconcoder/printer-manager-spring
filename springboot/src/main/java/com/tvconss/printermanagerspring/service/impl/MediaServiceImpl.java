@@ -171,9 +171,7 @@ public class MediaServiceImpl implements MediaService {
             Matcher matcher = pattern.matcher(textContent);
             while (matcher.find()) {
                 String fieldName = matcher.group(1).trim();
-
-                // Validate field name format and add if not already present
-                if (fieldName.matches("[A-Za-z_][\\w]*") && !mergeFields.contains(fieldName)) {
+                if (!fieldName.isEmpty() && !mergeFields.contains(fieldName)) {
                     mergeFields.add(fieldName);
                 }
             }
