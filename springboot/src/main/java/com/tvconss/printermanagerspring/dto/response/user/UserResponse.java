@@ -12,6 +12,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
+
     private Long userId;
     private String email;
     private String firstName;

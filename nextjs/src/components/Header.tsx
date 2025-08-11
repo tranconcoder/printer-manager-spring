@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from './Logo'
-import ProfileBox from './ProfileBox'
+import ProfileBox from '../app/ProfileBox'
 
 export default function Header() {
     return (

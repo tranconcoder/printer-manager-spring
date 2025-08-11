@@ -16,6 +16,7 @@ const initialState: UserState = {
    lastName: '',
    email: '',
    gender: Gender.MALE,
+   avatars: {},
 
    isLoggedIn: false,
    isLoading: false,
@@ -55,6 +56,7 @@ export const userSlice = createSlice({
             state.firstName = action.payload.firstName
             state.lastName = action.payload.lastName
             state.email = action.payload.email
+            state.avatars = action.payload.avatars || {}
          })
          .addCase(fetchRegisterUser.rejected, (state, action) => {
             state.isLoading = false
@@ -70,10 +72,13 @@ export const userSlice = createSlice({
          .addCase(fetchLoginUser.fulfilled, (state, action) => {
             state.isLoading = false
             state.isLoggedIn = true
+
             state.userId = action.payload.userId
             state.firstName = action.payload.firstName
             state.lastName = action.payload.lastName
             state.email = action.payload.email
+            state.avatars = action.payload.avatars || {}
+
             state.errorMessage = ''
          })
          .addCase(fetchLoginUser.rejected, (state, action) => {

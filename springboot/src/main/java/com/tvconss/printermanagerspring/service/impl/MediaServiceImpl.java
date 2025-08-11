@@ -25,15 +25,13 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public String uploadDocumentFile(MultipartFile file, Long userId) {
+//        Get file metadata information
         String fileName = Optional.ofNullable(file.getOriginalFilename())
                 .orElseThrow(() -> new ErrorResponse(ErrorCode.MEDIA_UNSUPPORTED_TYPE))
                 .toLowerCase();
 
         String contentType = Optional.ofNullable(file.getContentType())
                 .orElseThrow(() -> new ErrorResponse(ErrorCode.MEDIA_UNSUPPORTED_TYPE));
-
-        System.out.println("File Name: " + fileName);
-        System.out.println("Content Type: " + contentType);
 
         String fileExtension = StringUtils.getFilenameExtension(fileName);
 
@@ -42,13 +40,16 @@ public class MediaServiceImpl implements MediaService {
             case "application/pdf" -> "pdf";
 
 //            Microsoft Office Word
-            case "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" -> "word";
+            case "application/msword",
+                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document" -> "word";
 
 //            Microsoft Office Excel
-            case "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" -> "excel";
+            case "application/vnd.ms-excel",
+                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" -> "excel";
 
 //            Microsoft Office PowerPoint
-            case "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation" -> "powerpoint";
+            case "application/vnd.ms-powerpoint",
+                 "application/vnd.openxmlformats-officedocument.presentationml.presentation" -> "powerpoint";
 
 //            Text files
             case "text/plain" -> "text";
@@ -57,12 +58,14 @@ public class MediaServiceImpl implements MediaService {
 
         String key = String.format("/documents/%s/%d/%s.%s", fileType, userId, System.currentTimeMillis(), fileExtension);
 
+//        Setup S3 PutObjectRequest
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(this.bucketName)
                 .key(key)
                 .contentType(contentType)
                 .build();
 
+//        Handle file upload
         try {
             byte[] fileBytes = file.getBytes();
             RequestBody requestBody = RequestBody.fromBytes(fileBytes);
@@ -72,6 +75,7 @@ public class MediaServiceImpl implements MediaService {
             throw new ErrorResponse(ErrorCode.MEDIA_ERROR_INTERNAL, "Failed to upload document file!");
         }
 
+//        Return the S3 key of the uploaded file
         return key;
     }
 }

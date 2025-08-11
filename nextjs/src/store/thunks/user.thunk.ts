@@ -29,10 +29,14 @@ export const fetchRegisterUser = createAsyncThunk(
 export const fetchLoginUser = createAsyncThunk(
    'user/login',
    async (payload: LoginPayload) => {
-      const response = await axiosInstance.post<LoginResponse>(
-         '/auth/login',
-         payload
-      )
+      const response = await axiosInstance
+         .post<LoginResponse>('/auth/login', payload)
+         .catch((error) => {
+            const errorMessage =
+               error?.response?.data?.errorMessage || 'Đăng nhập thất bại'
+
+            throw new Error(errorMessage)
+         })
 
       if (response.status === HttpStatusCode.Accepted) {
          return response.data.user
