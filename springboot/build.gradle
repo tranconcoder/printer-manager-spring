@@ -68,6 +68,14 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
+    // Document Processing - Docx4j with proper JAXB configuration
+    implementation 'org.docx4j:docx4j-core:11.5.4'
+    implementation 'org.docx4j:docx4j-JAXB-ReferenceImpl:11.5.4'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
+    implementation 'org.glassfish.jaxb:jaxb-core:3.0.2'
+    implementation 'com.sun.xml.bind:jaxb-impl:3.0.2'
+
     // Development Only
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 

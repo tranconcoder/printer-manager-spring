@@ -95,7 +95,6 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 .generate(publicId);
     }
 
-
     @Override
     public Map<String, String> getAvatarUrls(Long userId) {
         String publicId = this.getPublicIdForAvatar(userId);
@@ -124,6 +123,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         return urls;
     }
 
+    @Override
     public String getPublicIdForAvatar(Long userId) {
         return String.format("%s/%s",
             MediaCategory.MEDIA_AVATAR.getMediaCategory(),

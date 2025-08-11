@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/media")
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class MediaController {
     private final MediaService mediaService;
 
     @PostMapping("/upload")
-    private ResponseEntity<String> uploadMedia(HttpServletRequest request, @RequestBody MultipartFile file) {
+    private ResponseEntity<String> uploadMedia(HttpServletRequest request, @RequestBody MultipartFile file) throws IOException {
         Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
         Long userId = jwtClaims.get("userId", Long.class);
 
