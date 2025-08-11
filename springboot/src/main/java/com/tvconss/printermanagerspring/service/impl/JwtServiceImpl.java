@@ -1,6 +1,8 @@
 package com.tvconss.printermanagerspring.service.impl;
 
 import com.tvconss.printermanagerspring.dto.internal.jwt.JwtPayload;
+import com.tvconss.printermanagerspring.enums.ErrorCode;
+import com.tvconss.printermanagerspring.exception.ErrorResponse;
 import com.tvconss.printermanagerspring.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -79,8 +81,12 @@ public class JwtServiceImpl implements JwtService {
                 .parseClaimsJws(token)
                 .getBody();
 
-        if (!claims.getSubject().equals(userId.toString()) || !claims.getId().equals(jti.toString())) {
-            throw new IllegalArgumentException("Invalid token claims");
+        String userIdStr = userId.toString();
+        String jtiStr = jti.toString();
+
+
+        if (!claims.getSubject().equals(userIdStr) || !claims.getId().equals(jtiStr)) {
+            throw new ErrorResponse(ErrorCode.AUTH_INVALID_TOKEN);
         }
 
         return claims;

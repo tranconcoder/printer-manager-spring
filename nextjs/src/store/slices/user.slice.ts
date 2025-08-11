@@ -5,7 +5,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import {
    fetchLoginUser,
    fetchRegisterUser,
-   checkIsUserLoggedIn,
+   fetchUserInformation,
 } from '../thunks/user.thunk'
 
 export interface UserState extends User {
@@ -95,24 +95,30 @@ export const userSlice = createSlice({
          })
 
          //
-         // Check is logged in
+         // Fetch user information
          //
-         .addCase(checkIsUserLoggedIn.pending, (state) => {
+         .addCase(fetchUserInformation.pending, (state) => {
             state.isLoading = true
 
             state.errorMessage = initialState.errorMessage
          })
-         .addCase(checkIsUserLoggedIn.fulfilled, (state, action) => {
-            console.log('payload' + action.payload)
-            if (!action.payload) {
-               return initialState
-            }
-
+         .addCase(fetchUserInformation.fulfilled, (state, action) => {
             state.isLoading = false
+            state.isLoggedIn = true
+
+            state.userId = action.payload.userId
+            state.firstName = action.payload.firstName
+            state.lastName = action.payload.lastName
+            state.email = action.payload.email
+            state.gender = action.payload.gender
+            state.avatars = action.payload.avatars || initialState.avatars
+
+            state.errorMessage = initialState.errorMessage
          })
-         .addCase(checkIsUserLoggedIn.rejected, (state) => {
+         .addCase(fetchUserInformation.rejected, (state) => {
             state.isLoading = false
             state.isLoggedIn = false
+
             state.errorMessage = 'Không thể xác định trạng thái đăng nhập'
          })
    },

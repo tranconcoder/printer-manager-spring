@@ -4262,3 +4262,116 @@ This generated password is for development use only. Your security configuration
 2025-08-11T04:51:40.212Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /auth/refresh-token
 2025-08-11T04:51:40.212Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /auth/refresh-token
 2025-08-11T04:51:40.924Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:53:08.231Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /auth/check-logged-in
+2025-08-11T04:53:08.231Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-3] o.s.security.web.FilterChainProxy        : Securing OPTIONS /auth/check-logged-in
+2025-08-11T04:53:08.265Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /auth/check-logged-in
+2025-08-11T04:53:08.271Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /auth/check-logged-in
+2025-08-11T04:53:08.305Z  WARN 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [[Mon Aug 11 04:53:08 UTC 2025] Xác thực thất bại: JWT expired at 2025-08-11T04:26:31Z. Current time: 2025-08-11T04:53:08Z, a difference of 1597296 milliseconds.  Allowed clock skew: 0 milliseconds.]
+2025-08-11T04:53:08.306Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:53:08.315Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /auth/check-logged-in
+2025-08-11T04:53:08.317Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /auth/check-logged-in
+2025-08-11T04:53:08.319Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.security.web.FilterChainProxy        : Securing OPTIONS /auth/refresh-token
+2025-08-11T04:53:08.328Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /auth/refresh-token
+2025-08-11T04:53:08.330Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /auth/refresh-token
+2025-08-11T04:53:08.330Z  WARN 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [[Mon Aug 11 04:53:08 UTC 2025] Xác thực thất bại: JWT expired at 2025-08-11T04:26:31Z. Current time: 2025-08-11T04:53:08Z, a difference of 1597327 milliseconds.  Allowed clock skew: 0 milliseconds.]
+2025-08-11T04:53:08.330Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:53:08.633Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:53:08.639Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /auth/check-logged-in
+2025-08-11T04:53:08.640Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /auth/check-logged-in
+2025-08-11T04:53:08.648Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:53:08.650Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /auth/check-logged-in
+2025-08-11T04:53:08.650Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /auth/check-logged-in
+2025-08-11T04:53:08.658Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:53:15.792Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /auth/check-logged-in
+2025-08-11T04:53:15.794Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /auth/check-logged-in
+2025-08-11T04:53:15.808Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:53:15.811Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /auth/check-logged-in
+2025-08-11T04:53:15.812Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /auth/check-logged-in
+2025-08-11T04:53:15.828Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:53:58.082Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /auth/check-logged-in
+2025-08-11T04:53:58.085Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /auth/check-logged-in
+2025-08-11T04:53:58.110Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:53:58.119Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /auth/check-logged-in
+2025-08-11T04:53:58.121Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /auth/check-logged-in
+2025-08-11T04:53:58.134Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:55:22.044Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:55:22.046Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:55:22.416Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:58:45.000Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /user/profile
+2025-08-11T04:58:45.000Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /user/profile
+2025-08-11T04:58:45.033Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:58:45.037Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:58:45.156Z  WARN 394269 --- [printer-manager-spring] [http-nio-4000-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [[Mon Aug 11 04:58:45 UTC 2025] Xác thực thất bại: JWT expired at 2025-08-11T04:58:08Z. Current time: 2025-08-11T04:58:45Z, a difference of 37113 milliseconds.  Allowed clock skew: 0 milliseconds.]
+2025-08-11T04:58:45.157Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:58:45.158Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:58:45.158Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:58:45.165Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /auth/refresh-token
+2025-08-11T04:58:45.167Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.security.web.FilterChainProxy        : Secured POST /auth/refresh-token
+2025-08-11T04:58:45.172Z  WARN 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [[Mon Aug 11 04:58:45 UTC 2025] Xác thực thất bại: JWT expired at 2025-08-11T04:58:08Z. Current time: 2025-08-11T04:58:45Z, a difference of 37169 milliseconds.  Allowed clock skew: 0 milliseconds.]
+2025-08-11T04:58:45.172Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:58:46.067Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:58:46.075Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:58:46.076Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:58:46.121Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:58:46.124Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:58:46.125Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:58:46.137Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:06.079Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:06.084Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:06.124Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:06.133Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:06.135Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:06.156Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:08.389Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:08.390Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:08.411Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:08.413Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:08.414Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:08.432Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:09.471Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:09.473Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:09.516Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:09.521Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:09.527Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:09.635Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:10.980Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:10.982Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:11.013Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:11.019Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:11.020Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:11.042Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:42.903Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:42.906Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:42.932Z  WARN 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [[Mon Aug 11 04:59:42 UTC 2025] Token xác thực không hợp lệ: Invalid token]
+2025-08-11T04:59:42.933Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:42.936Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:42.938Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:42.944Z  WARN 394269 --- [printer-manager-spring] [http-nio-4000-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [[Mon Aug 11 04:59:42 UTC 2025] Token xác thực không hợp lệ: Invalid token]
+2025-08-11T04:59:42.944Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:42.949Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /auth/refresh-token
+2025-08-11T04:59:42.951Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /auth/refresh-token
+2025-08-11T04:59:42.985Z  WARN 394269 --- [printer-manager-spring] [http-nio-4000-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [[Mon Aug 11 04:59:42 UTC 2025] Token xác thực không hợp lệ: Invalid refresh token]
+2025-08-11T04:59:42.986Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:54.525Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /auth/login
+2025-08-11T04:59:54.535Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /auth/login
+2025-08-11T04:59:54.537Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.security.web.FilterChainProxy        : Secured POST /auth/login
+2025-08-11T04:59:55.197Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:57.535Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:57.538Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:57.565Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:57.570Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:57.572Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:57.594Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:59.942Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:59.944Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T04:59:59.974Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T04:59:59.979Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T04:59:59.982Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T05:00:00.009Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T05:00:22.216Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /auth/login
+2025-08-11T05:00:22.217Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /auth/login
+2025-08-11T05:00:23.491Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-11T10:36:21.604Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /user/profile
+2025-08-11T10:36:21.653Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /user/profile
+2025-08-11T10:36:22.102Z  WARN 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [[Mon Aug 11 10:36:21 UTC 2025] Xác thực thất bại: JWT expired at 2025-08-11T04:56:40Z. Current time: 2025-08-11T10:36:21Z, a difference of 20381951 milliseconds.  Allowed clock skew: 0 milliseconds.]
+2025-08-11T10:36:22.107Z DEBUG 394269 --- [printer-manager-spring] [http-nio-4000-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext

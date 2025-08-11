@@ -36,23 +36,10 @@ public class MediaServiceImpl implements MediaService {
         String fileExtension = StringUtils.getFilenameExtension(fileName);
 
         String fileType =  switch (contentType) {
-//            Pdf document
-            case "application/pdf" -> "pdf";
-
 //            Microsoft Office Word
             case "application/msword",
                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document" -> "word";
 
-//            Microsoft Office Excel
-            case "application/vnd.ms-excel",
-                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" -> "excel";
-
-//            Microsoft Office PowerPoint
-            case "application/vnd.ms-powerpoint",
-                 "application/vnd.openxmlformats-officedocument.presentationml.presentation" -> "powerpoint";
-
-//            Text files
-            case "text/plain" -> "text";
             default -> throw new ErrorResponse(ErrorCode.MEDIA_UNSUPPORTED_TYPE);
         };
 

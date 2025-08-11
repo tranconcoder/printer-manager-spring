@@ -1,4 +1,5 @@
 import axiosInstance from '@/services/axios.service'
+import User from '@/types/base/user'
 import { LoginPayload, RegisterPayload } from '@/types/https/auth.request'
 import { LoginResponse, RegisterResponse } from '@/types/https/auth.response'
 import { createAsyncThunk } from '@reduxjs/toolkit'
@@ -52,12 +53,14 @@ export const fetchLoginUser = createAsyncThunk(
    }
 )
 
-export const checkIsUserLoggedIn = createAsyncThunk(
-   'user/isLoggedIn',
+export const fetchUserInformation = createAsyncThunk(
+   'user/fetchUserInformation',
    async (_: void, {}) => {
       return await axiosInstance
-         .get('/auth/check-logged-in')
-         .then((res) => res.data as true)
-         .catch(() => false)
+         .get('/user/profile')
+         .then((res) => res.data as User)
+         .catch(() => {
+            throw new Error('Lấy thông tin người dùng thất bại!')
+         })
    }
 )
