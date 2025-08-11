@@ -6,6 +6,7 @@ import { useRef } from 'react'
 import { Provider } from 'react-redux'
 import { Persistor, persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
+import Initial from './Initial'
 
 const roboto = Roboto({
    variable: '--font-roboto',
@@ -26,8 +27,6 @@ export default function StoreProvider({
       persistorRef.current = persistStore(storeRef.current)
    }
 
-   // Check user is logged in with api
-
    return (
       <html lang="en">
          <body className={`${roboto.variable} antialiased`}>
@@ -36,6 +35,8 @@ export default function StoreProvider({
                   loading={null}
                   persistor={persistorRef.current as Persistor}
                >
+                  <Initial />
+
                   {children}
                </PersistGate>
             </Provider>

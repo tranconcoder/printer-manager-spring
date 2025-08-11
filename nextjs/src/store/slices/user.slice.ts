@@ -2,7 +2,11 @@ import Gender from '@/enums/gender.enum'
 import User from '@/types/base/user'
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { fetchLoginUser, fetchRegisterUser } from '../thunks/user.thunk'
+import {
+   fetchLoginUser,
+   fetchRegisterUser,
+   checkIsUserLoggedIn,
+} from '../thunks/user.thunk'
 
 export interface UserState extends User {
    isLoggedIn: boolean
@@ -16,7 +20,7 @@ const initialState: UserState = {
    lastName: '',
    email: '',
    gender: Gender.MALE,
-   avatars: {},
+   avatars: {} as User['avatars'],
 
    isLoggedIn: false,
    isLoading: false,
@@ -37,6 +41,10 @@ export const userSlice = createSlice({
       setErrorMessage: (state, action: PayloadAction<string>) => {
          state.errorMessage = action.payload
          console.error('Error message set:', action.payload)
+      },
+
+      resetUser: () => {
+         return initialState
       },
    },
    extraReducers: (builder) => {
@@ -85,10 +93,32 @@ export const userSlice = createSlice({
             state.isLoading = false
             state.errorMessage = action.error.message || 'Đăng nhập thất bại'
          })
+
+         //
+         // Check is logged in
+         //
+         .addCase(checkIsUserLoggedIn.pending, (state) => {
+            state.isLoading = true
+
+            state.errorMessage = initialState.errorMessage
+         })
+         .addCase(checkIsUserLoggedIn.fulfilled, (state, action) => {
+            console.log('payload' + action.payload)
+            if (!action.payload) {
+               return initialState
+            }
+
+            state.isLoading = false
+         })
+         .addCase(checkIsUserLoggedIn.rejected, (state) => {
+            state.isLoading = false
+            state.isLoggedIn = false
+            state.errorMessage = 'Không thể xác định trạng thái đăng nhập'
+         })
    },
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser, setErrorMessage } = userSlice.actions
+export const { setUser, setErrorMessage, resetUser } = userSlice.actions
 
 export default userSlice.reducer

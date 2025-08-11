@@ -16,6 +16,7 @@ import com.tvconss.printermanagerspring.service.AuthService;
 import com.tvconss.printermanagerspring.service.JwtService;
 import com.tvconss.printermanagerspring.util.AuthUtil;
 import com.tvconss.printermanagerspring.util.RedisUtil;
+import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,32 +26,15 @@ import java.security.*;
 import java.util.Base64;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private ObjectMapper objectMapper;
-    private KeyTokenRedisRepository keyTokenRedisRepository;
-    private RedisUtil redisUtil;
-    private AuthUtil authUtil;
-    private JwtService jwtService;
-
-    @Autowired
-    public AuthServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder,
-                           AuthUtil authUtil,
-                           ObjectMapper objectMapper,
-                           KeyTokenRedisRepository keyTokenRedisRepository,
-                           RedisUtil redisUtil,
-                           JwtService jwtService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authUtil = authUtil;
-        this.objectMapper = objectMapper;
-        this.keyTokenRedisRepository = keyTokenRedisRepository;
-        this.redisUtil = redisUtil;
-        this.jwtService = jwtService;
-    }
-
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ObjectMapper objectMapper;
+    private final KeyTokenRedisRepository keyTokenRedisRepository;
+    private final RedisUtil redisUtil;
+    private final AuthUtil authUtil;
+    private final JwtService jwtService;
 
     public AuthResponse register(AuthRegisterRequest data) {
 //        Check email is not existed
@@ -168,5 +152,11 @@ public class AuthServiceImpl implements AuthService {
         AuthResponse authResponse = this.authUtil.generateAuthInformation(user, jti);
 
         return authResponse.getToken();
+    }
+
+    public void logout(Long userId, Long jti) {
+        String keyTokenKey = this.redisUtil.getKeyTokenKey(userId, jti);
+
+        this.keyTokenRedisRepository.deleteById(keyTokenKey);
     }
 }

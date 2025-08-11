@@ -13,6 +13,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,22 +21,13 @@ import java.security.PublicKey;
 import java.util.Base64;
 
 @Component
+@RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final ObjectMapper objectMapper;
     private final KeyTokenRedisRepository keyTokenRedisRepository;
     private final RedisUtil redisUtil;
     private final JwtService jwtService;
-
-    public AuthInterceptor(ObjectMapper objectMapper,
-                           KeyTokenRedisRepository keyTokenRedisRepository,
-                           RedisUtil redisUtil,
-                           JwtService jwtService) {
-        this.objectMapper = objectMapper;
-        this.keyTokenRedisRepository = keyTokenRedisRepository;
-        this.redisUtil = redisUtil;
-        this.jwtService = jwtService;
-    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -85,6 +77,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         try {
             PublicKey publicKey = keyToken.getPublicKeyAsObject();
             Claims jwtClaims = this.jwtService.verifyToken(token, publicKey, userId, jti);
+
+            System.out.println("JWT Claims: " + jwtClaims);
 
 //            Set request attribute
             request.setAttribute("jwtClaims", jwtClaims);

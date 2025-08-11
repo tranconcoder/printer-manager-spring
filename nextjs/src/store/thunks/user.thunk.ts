@@ -17,6 +17,9 @@ export const fetchRegisterUser = createAsyncThunk(
          })
 
       if (response.status === HttpStatusCode.Created) {
+         localStorage.setItem('refreshToken', response.data.token.refreshToken)
+         localStorage.setItem('accessToken', response.data.token.accessToken)
+
          return response.data.user
       } else {
          console.log('Register failed:', response.data)
@@ -39,9 +42,22 @@ export const fetchLoginUser = createAsyncThunk(
          })
 
       if (response.status === HttpStatusCode.Accepted) {
+         localStorage.setItem('refreshToken', response.data.token.refreshToken)
+         localStorage.setItem('accessToken', response.data.token.accessToken)
+
          return response.data.user
       } else {
          throw new Error('Đăng nhập thất bại')
       }
+   }
+)
+
+export const checkIsUserLoggedIn = createAsyncThunk(
+   'user/isLoggedIn',
+   async (_: void, {}) => {
+      return await axiosInstance
+         .get('/auth/check-logged-in')
+         .then((res) => res.data as true)
+         .catch(() => false)
    }
 )

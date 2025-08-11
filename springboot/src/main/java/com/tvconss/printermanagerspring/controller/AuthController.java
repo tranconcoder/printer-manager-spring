@@ -6,7 +6,8 @@ import com.tvconss.printermanagerspring.dto.request.auth.AuthRegisterRequest;
 import com.tvconss.printermanagerspring.dto.response.auth.AuthResponse;
 import com.tvconss.printermanagerspring.dto.response.auth.JwtTokenPair;
 import com.tvconss.printermanagerspring.service.AuthService;
-import com.tvconss.printermanagerspring.service.KeyTokenService;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,5 +50,20 @@ public class AuthController {
     @GetMapping("/check-logged-in")
     public ResponseEntity<Boolean> checkLoggedIn() {
         return ResponseEntity.ok(true);
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<Boolean> logout(HttpServletRequest request) {
+        Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
+
+        Long userId = jwtClaims.get("userId", Long.class);
+        String jtiStr = jwtClaims.get("jti", String.class);
+        Long jti = Long.parseLong(jtiStr);
+
+        this.authService.logout(userId, jti);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(true);
     }
 }

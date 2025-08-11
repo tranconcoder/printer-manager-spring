@@ -13,4 +13,5 @@ public interface AuthService {
 
     JwtTokenPair refreshToken(String refreshToken);
 
+    void logout(Long userId, Long jti);
 }

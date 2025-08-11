@@ -25,8 +25,6 @@ export default function ProfileBox() {
          </div>
       )
 
-   console.log(avatars)
-
    return (
       <div
          className={
