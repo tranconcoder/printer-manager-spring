@@ -12,6 +12,8 @@ import java.util.List;
 public class DocumentResponse {
     private Long documentId;
 
+    private String documentKey;
+
     private String documentName;
 
     private Long documentSize;
@@ -22,7 +24,7 @@ public class DocumentResponse {
 
     private String documentDescription;
 
-    private Boolean isPublic ;
+    private Boolean isPublic = false;
 
     private String fileType;
 

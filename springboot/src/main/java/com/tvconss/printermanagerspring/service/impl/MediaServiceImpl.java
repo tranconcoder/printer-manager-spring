@@ -1,6 +1,7 @@
 package com.tvconss.printermanagerspring.service.impl;
 
 import com.tvconss.printermanagerspring.dto.response.media.DocumentResponse;
+import com.tvconss.printermanagerspring.dto.response.media.S3PresignResponse;
 import com.tvconss.printermanagerspring.entity.DocumentEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
@@ -117,6 +118,23 @@ public class MediaServiceImpl implements MediaService {
         Page<DocumentResponse> documentResponsePage = documentPage.map(documentMapper::documentEntityToDocumentResponse);
 
         return new PagedModel<>(documentResponsePage);
+    }
+
+    @Override
+    public S3PresignResponse getS3PresignUrl(Long authorId, Long fileId) {
+//        Validate file ownership
+        DocumentEntity document = this.documentRepository.findByDocumentIdAndDeletedAtIsNull(fileId)
+                .orElseThrow(() -> new ErrorResponse(ErrorCode.MEDIA_NOT_FOUND));
+
+//        Check permission to access the file
+        if (!document.getIsPublic() && !document.getDocumentAuthorId().equals(authorId)) {
+            throw new ErrorResponse(ErrorCode.MEDIA_FORBIDDEN, "You do not have permission to access this file");
+        }
+
+//        Generate presigned URL for the file
+        
+
+        return null;
     }
 
     @Override

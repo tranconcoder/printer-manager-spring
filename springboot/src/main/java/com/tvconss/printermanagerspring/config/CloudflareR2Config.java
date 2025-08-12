@@ -9,6 +9,7 @@ import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 import java.net.URI;
 
@@ -42,6 +43,17 @@ public class CloudflareR2Config {
                         AwsBasicCredentials.create(this.accessKey,
                                 this.secretKey)))
                 .serviceConfiguration(serviceConfig)
+                .build();
+    }
+
+    @Bean
+    public S3Presigner s3Presigner() {
+        return S3Presigner.builder()
+                .region(Region.of("auto"))
+                .endpointOverride(URI.create(this.endPoint))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(this.accessKey,
+                                this.secretKey)))
                 .build();
     }
 }

@@ -30,7 +30,9 @@ public enum ErrorCode {
 //    Media service
     MEDIA_ERROR_INTERNAL("MEDIA_0400", "Media service error internal", HttpStatus.INTERNAL_SERVER_ERROR),
     MEDIA_UNSUPPORTED_TYPE("MEDIA_0401", "Unsupported media type", HttpStatus.BAD_REQUEST),
-    MEDIA_GET_HASH_ERROR("MEDIA_0402", "Error getting media hash", HttpStatus.INTERNAL_SERVER_ERROR);
+    MEDIA_GET_HASH_ERROR("MEDIA_0402", "Error getting media hash", HttpStatus.INTERNAL_SERVER_ERROR),
+    MEDIA_NOT_FOUND("MEDIA_0403", "Media not found", HttpStatus.NOT_FOUND),
+    MEDIA_FORBIDDEN("MEDIA_0404", "Media access forbidden", HttpStatus.FORBIDDEN);
 
 
 

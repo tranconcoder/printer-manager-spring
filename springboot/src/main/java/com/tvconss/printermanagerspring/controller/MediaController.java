@@ -2,6 +2,7 @@ package com.tvconss.printermanagerspring.controller;
 
 import com.tvconss.printermanagerspring.dto.request.media.UploadMedia;
 import com.tvconss.printermanagerspring.dto.response.media.DocumentResponse;
+import com.tvconss.printermanagerspring.dto.response.media.S3PresignResponse;
 import com.tvconss.printermanagerspring.entity.DocumentEntity;
 import com.tvconss.printermanagerspring.service.MediaService;
 import io.jsonwebtoken.Claims;
@@ -48,5 +49,18 @@ public class MediaController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediaService.getAllUserMedia(userId, page, size));
+    }
+
+
+    @GetMapping("/user/file")
+    private ResponseEntity<S3PresignResponse> getUserFileById(@RequestParam("fileId") Long fileId, HttpServletRequest request) {
+        Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
+        Long userId = jwtClaims.get("userId", Long.class);
+
+        S3PresignResponse documentResponse = this.mediaService.getS3PresignUrl(userId, fileId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(documentResponse);
     }
 }
