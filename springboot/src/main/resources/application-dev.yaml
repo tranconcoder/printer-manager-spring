@@ -45,6 +45,7 @@ cloudflare:
     access-key: "bcd2ce9da8953680450bd6490f782117"
     secret-key: "ce3152122387b96162b4e41ceca68246d864ee92e614442ed2e1c3ce5186f506"
     bucket-name: "pdf-storage"
+    presigned-url-expire-time: 10800
 
 jwt:
   rsa_key_size: 2048

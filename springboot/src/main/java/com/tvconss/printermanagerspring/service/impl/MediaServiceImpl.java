@@ -25,9 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 import java.io.InputStream;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -38,12 +43,18 @@ import java.util.regex.Pattern;
 @Service
 public class MediaServiceImpl implements MediaService {
 
+//    AWS S3 client for Cloudflare R2
     private final S3Client awsS3Client;
+    private final S3Presigner awsS3Presigner;
+
     private final DocumentRepository documentRepository;
     private final DocumentMapper documentMapper;
 
     @Value("${cloudflare.r2.bucket-name}")
     private String bucketName;
+
+    @Value("${cloudflare.r2.presigned-url-expire-time}")
+    private Long awsPresignUrlExpireTime;
 
     @Override
     @Transactional
@@ -132,9 +143,32 @@ public class MediaServiceImpl implements MediaService {
         }
 
 //        Generate presigned URL for the file
-        
+        Duration expiration = Duration.ofMillis(this.awsPresignUrlExpireTime);
 
-        return null;
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(this.bucketName)
+                .key(document.getDocumentKey())
+                .build();
+
+        PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+                .putObjectRequest(putObjectRequest)
+                .signatureDuration(expiration)
+                .build();
+
+
+        String url = this.awsS3Presigner.presignPutObject(presignRequest)
+                .url()
+                .toString();
+
+        log.info("Generated presigned URL for file {}: {}", document.getDocumentKey(), url);
+
+//        Create response
+        Instant instant = Instant.now().plus(expiration);
+        return new S3PresignResponse(url,
+                document.getDocumentKey(),
+                Date.from(instant),
+                document.getMergeFields());
+
     }
 
     @Override
