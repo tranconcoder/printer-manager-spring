@@ -1,14 +1,24 @@
 package com.tvconss.printermanagerspring.service.impl;
 
+import com.tvconss.printermanagerspring.dto.response.media.DocumentResponse;
+import com.tvconss.printermanagerspring.entity.DocumentEntity;
 import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
+import com.tvconss.printermanagerspring.mapper.DocumentMapper;
+import com.tvconss.printermanagerspring.repository.DocumentRepository;
 import com.tvconss.printermanagerspring.service.MediaService;
+import com.tvconss.printermanagerspring.util.HashUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -22,18 +32,21 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Service
 @RequiredArgsConstructor
 @Slf4j
+@Service
 public class MediaServiceImpl implements MediaService {
 
     private final S3Client awsS3Client;
+    private final DocumentRepository documentRepository;
+    private final DocumentMapper documentMapper;
 
     @Value("${cloudflare.r2.bucket-name}")
     private String bucketName;
 
     @Override
-    public String uploadDocumentFile(MultipartFile file, Long userId) {
+    @Transactional
+    public String uploadDocumentFile(MultipartFile file, Long userId, String description) {
         // Get file metadata information
         String fileName = Optional.ofNullable(file.getOriginalFilename())
                 .orElseThrow(() -> new ErrorResponse(ErrorCode.MEDIA_UNSUPPORTED_TYPE))
@@ -74,8 +87,36 @@ public class MediaServiceImpl implements MediaService {
             throw new ErrorResponse(ErrorCode.MEDIA_ERROR_INTERNAL, "Failed to upload document file!");
         }
 
+//        Save file metadata to the database
+        DocumentEntity documentEntity = new DocumentEntity();
+
+        documentEntity.setDocumentKey(key);
+        documentEntity.setDocumentName(fileName);
+        documentEntity.setDocumentSize(file.getSize());
+        documentEntity.setDocumentAuthorId(userId);
+        documentEntity.setDocumentDescription(description);
+        documentEntity.setFileType(fileType);
+        documentEntity.setMergeFields(mergeFields);
+
+        try {
+            documentEntity.setChecksum(HashUtil.getChecksum(file));
+        } catch (Exception e) {
+            log.error("Failed to calculate checksum for document file", e);
+            throw new ErrorResponse(ErrorCode.MEDIA_GET_HASH_ERROR);
+        }
+
+        this.documentRepository.save(documentEntity);
+
         // Return the S3 key of the uploaded file
         return key;
+    }
+
+    public PagedModel<DocumentResponse> getAllUserMedia(Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<DocumentEntity> documentPage = this.documentRepository.findAllByDocumentAuthorId(userId, pageable);
+        Page<DocumentResponse> documentResponsePage = documentPage.map(documentMapper::documentEntityToDocumentResponse);
+
+        return new PagedModel<>(documentResponsePage);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.tvconss.printermanagerspring.enums.ErrorCode;
 import com.tvconss.printermanagerspring.exception.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,14 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionController {
 
     @ExceptionHandler(ErrorResponse.class)
     public ResponseEntity<?> errorResponseException (HttpServletRequest req, ErrorResponse error) {
+        log.error(error.getMessage() + " - " + error.getErrorHttpCode() + " - " + req.getRequestURI() );
+
         return ResponseEntity.status(error.getErrorHttpCode()).body(error.getResponse(req.getRequestURI()));
     }
 

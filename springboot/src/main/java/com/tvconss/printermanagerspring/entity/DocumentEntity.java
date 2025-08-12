@@ -12,7 +12,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Date;
 import java.util.List;
 
-@Table(name = "document")
+@Table(
+        name = "document",
+        indexes = {
+                @Index(name = "idx_document_author_id", columnList = "document_author_id"),
+        }
+)
 @Entity
 @Data
 @DynamicUpdate
@@ -47,7 +52,6 @@ public class DocumentEntity {
 
     @Column(name = "is_public", columnDefinition = "boolean default false")
     private Boolean isPublic = false;
-
 
     @Column(name = "file_type")
     private String fileType;
