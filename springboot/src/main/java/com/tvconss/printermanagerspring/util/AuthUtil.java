@@ -28,7 +28,6 @@ public class AuthUtil {
     private final RedisUtil redisUtil;
     private final KeyTokenRedisRepository keyTokenRedisRepository;
     private final UserMapper userMapper;
-    private final CloudinaryService cloudinaryService;
 
     @Value("${jwt.refresh_token_expire_time}")
     private long refreshTokenExpireTime;
@@ -43,7 +42,6 @@ public class AuthUtil {
         this.redisUtil = redisUtil;
         this.keyTokenRedisRepository = keyTokenRedisRepository;
         this.userMapper = userMapper;
-        this.cloudinaryService = cloudinaryService;
 
         System.out.println("RSA Key Size: " + rsaKeySize);
 
@@ -96,9 +94,7 @@ public class AuthUtil {
         this.keyTokenRedisRepository.createOrUpdateKeyToken(keyToken);
 
 //        User information
-        UserResponse userResponse = new UserResponse();
-        userMapper.updateUserResponseFromEntity(user, userResponse);
-//        userResponse.setAvatarUrl(this.cloudinaryService.getAvatarUrl(user.getUserId(), MediaSize.AVATAR_SMALL));
+        UserResponse userResponse = this.userMapper.userEntityToUserResponse(user);//        userResponse.setAvatarUrl(this.cloudinaryService.getAvatarUrl(user.getUserId(), MediaSize.AVATAR_SMALL));
 
 //        Jwt token pair information
         JwtTokenPair jwtTokenPairResponse = new JwtTokenPair(

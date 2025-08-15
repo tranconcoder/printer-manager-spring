@@ -53,7 +53,8 @@ public class MediaController {
 
 
     @GetMapping("/user/file")
-    private ResponseEntity<S3PresignResponse> getUserFileById(@RequestParam("fileId") Long fileId, HttpServletRequest request) {
+    private ResponseEntity<S3PresignResponse> getUserFileById(HttpServletRequest request,
+                                                              @RequestParam("fileId") Long fileId) {
         Claims jwtClaims = (Claims) request.getAttribute("jwtClaims");
         Long userId = jwtClaims.get("userId", Long.class);
 

@@ -37,8 +37,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = this.userRepository.findByUserId(userId)
                 .orElseThrow(() -> new ErrorResponse(ErrorCode.USER_NOT_FOUND));
 
-        UserResponse userResponse = new UserResponse();
-        userMapper.updateUserResponseFromEntity(userEntity, userResponse);
+        UserResponse userResponse = this.userMapper.userEntityToUserResponse(userEntity);
 
         return userResponse;
     }
@@ -61,8 +60,7 @@ public class UserServiceImpl implements UserService {
         }
 
 //        Return updated user response
-        UserResponse userResponse = new UserResponse();
-        userMapper.updateUserResponseFromEntity(userEntity, userResponse);
+        UserResponse userResponse = this.userMapper.userEntityToUserResponse(userEntity);
 
         return userResponse;
     }
@@ -85,10 +83,7 @@ public class UserServiceImpl implements UserService {
         }
 
 //        Return updated user response
-        UserResponse userResponse = new UserResponse();
-        this.userMapper.updateUserResponseFromEntity(user, userResponse);
-
-        return userResponse;
+        return this.userMapper.userEntityToUserResponse(user);
     }
 
     @Override

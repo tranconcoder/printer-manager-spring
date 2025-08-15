@@ -24,9 +24,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
 import java.io.InputStream;
 import java.time.Duration;
@@ -80,7 +81,7 @@ public class MediaServiceImpl implements MediaService {
         List<String> mergeFields = this.extractMergeFields(file);
         log.info("Extracted merge fields: {}", mergeFields);
 
-        String key = String.format("/documents/%s/%d/%s.%s", fileType, userId, System.currentTimeMillis(), fileExtension);
+        String key = String.format("documents/%s/%d/%s.%s", fileType, userId, System.currentTimeMillis(), fileExtension);
 
         // Setup S3 PutObjectRequest
         PutObjectRequest request = PutObjectRequest.builder()
@@ -145,18 +146,18 @@ public class MediaServiceImpl implements MediaService {
 //        Generate presigned URL for the file
         Duration expiration = Duration.ofMillis(this.awsPresignUrlExpireTime);
 
-        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(this.bucketName)
                 .key(document.getDocumentKey())
                 .build();
 
-        PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-                .putObjectRequest(putObjectRequest)
+        GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
+                .getObjectRequest(getObjectRequest)
                 .signatureDuration(expiration)
                 .build();
 
 
-        String url = this.awsS3Presigner.presignPutObject(presignRequest)
+        String url = this.awsS3Presigner.presignGetObject(getObjectPresignRequest)
                 .url()
                 .toString();
 
@@ -164,11 +165,11 @@ public class MediaServiceImpl implements MediaService {
 
 //        Create response
         Instant instant = Instant.now().plus(expiration);
+
         return new S3PresignResponse(url,
                 document.getDocumentKey(),
                 Date.from(instant),
                 document.getMergeFields());
-
     }
 
     @Override
@@ -199,7 +200,7 @@ public class MediaServiceImpl implements MediaService {
                     throw new ErrorResponse(ErrorCode.MEDIA_ERROR_INTERNAL, "Failed to extract merge fields from document file!");
                 }
             }
-            
+
             if (documentXml != null) {
                 // Use more precise regex patterns to extract clean field names
                 // Pattern 1: MERGEFIELD instruction with field name
@@ -249,7 +250,7 @@ public class MediaServiceImpl implements MediaService {
             throw new ErrorResponse(ErrorCode.MEDIA_ERROR_INTERNAL, "Failed to extract merge fields from document file: " + e.getMessage());
         }
     }
-    
+
     private List<String> extractMergeFieldsFromText(String textContent) {
         List<String> mergeFields = new ArrayList<>();
         
@@ -259,7 +260,7 @@ public class MediaServiceImpl implements MediaService {
         Pattern pattern3 = Pattern.compile("<<([A-Za-z_][\\w]*)>>");
 
         Pattern[] patterns = {pattern1, pattern2, pattern3};
-        
+
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(textContent);
             while (matcher.find()) {

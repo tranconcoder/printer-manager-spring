@@ -1,5 +1,6 @@
 package com.tvconss.printermanagerspring.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 import java.net.URI;
 
+@Slf4j
 @Configuration
 public class CloudflareR2Config {
 
@@ -25,23 +27,21 @@ public class CloudflareR2Config {
     @Value("${cloudflare.r2.secret-key}")
     private String secretKey;
 
-    @Value("${cloudflare.r2.bucket-name}")
-    private String bucketName;
-
     @Bean
     public S3Client s3Client() {
         S3Configuration serviceConfig = S3Configuration.builder()
-                .pathStyleAccessEnabled(true)
-                .chunkedEncodingEnabled(false)
+                .pathStyleAccessEnabled(true)         // R2 needs path-style
+                .chunkedEncodingEnabled(false)        // R2 does not support chunked uploads
+                .checksumValidationEnabled(false)     // optional, avoids warning logs
                 .build();
 
         return S3Client.builder()
                 .httpClientBuilder(ApacheHttpClient.builder())
-                .region(Region.of("auto"))
-                .endpointOverride(URI.create(this.endPoint))
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(this.accessKey,
-                                this.secretKey)))
+                .endpointOverride(URI.create(endPoint))
+                .region(Region.of("apac"))              // <-- important
+                .credentialsProvider(
+                        StaticCredentialsProvider.create(
+                                AwsBasicCredentials.create(accessKey, secretKey)))
                 .serviceConfiguration(serviceConfig)
                 .build();
     }
@@ -49,11 +49,11 @@ public class CloudflareR2Config {
     @Bean
     public S3Presigner s3Presigner() {
         return S3Presigner.builder()
-                .region(Region.of("auto"))
-                .endpointOverride(URI.create(this.endPoint))
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(this.accessKey,
-                                this.secretKey)))
+                .endpointOverride(URI.create(endPoint))
+                .region(Region.of("apac"))              // <-- important
+                .credentialsProvider(
+                        StaticCredentialsProvider.create(
+                                AwsBasicCredentials.create(accessKey, secretKey)))
                 .build();
     }
 }
