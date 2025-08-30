@@ -94,7 +94,7 @@ public class AuthUtil {
         this.keyTokenRedisRepository.createOrUpdateKeyToken(keyToken);
 
 //        User information
-        UserResponse userResponse = this.userMapper.userEntityToUserResponse(user);//        userResponse.setAvatarUrl(this.cloudinaryService.getAvatarUrl(user.getUserId(), MediaSize.AVATAR_SMALL));
+        UserResponse userResponse = this.userMapper.userEntityToUserResponse(user);
 
 //        Jwt token pair information
         JwtTokenPair jwtTokenPairResponse = new JwtTokenPair(
